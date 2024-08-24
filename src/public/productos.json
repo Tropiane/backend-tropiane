@@ -1,0 +1,111 @@
+[
+  {
+    "title": "Escuadra de Acero",
+    "description": "Escuadra de acero inoxidable para mediciones precisas.",
+    "code": "EAC123",
+    "price": 250,
+    "status": true,
+    "stock": 100,
+    "category": "Herramientas",
+    "thumbnail": "ejemplo",
+    "id": 1
+  },
+  {
+    "title": "Calculadora Científica",
+    "description": "Calculadora científica con funciones avanzadas.",
+    "code": "CC456",
+    "price": 750,
+    "status": true,
+    "stock": 50,
+    "category": "Electrónica",
+    "thumbnail": "ejemplo",
+    "id": 2
+  },
+  {
+    "title": "Smartphone ABCD",
+    "description": "A high-end smartphone with 128GB storage and a 12MP camera.",
+    "code": "SMXYZ126",
+    "price": 699.99,
+    "status": true,
+    "stock": 150,
+    "category": "Electronics",
+    "id": 3
+  },
+  {
+    "title": "Mouse Inalámbrico",
+    "description": "Mouse inalámbrico con alta precisión y larga duración de batería.",
+    "code": "MI101",
+    "price": 150,
+    "status": true,
+    "stock": 200,
+    "category": "Accesorios",
+    "thumbnail": "ejemplo",
+    "id": 4
+  },
+  {
+    "title": "Teclado Mecánico",
+    "description": "Teclado mecánico RGB con interruptores táctiles.",
+    "code": "TM202",
+    "price": 400,
+    "status": true,
+    "stock": 75,
+    "category": "Accesorios",
+    "thumbnail": "ejemplo",
+    "id": 5
+  },
+  {
+    "title": "Monitor 4K",
+    "description": "Monitor 4K UHD con alta fidelidad de color.",
+    "code": "M4K303",
+    "price": 800,
+    "status": true,
+    "stock": 45,
+    "category": "Monitores",
+    "thumbnail": "ejemplo",
+    "id": 6
+  },
+  {
+    "title": "Smartphone ABCDE",
+    "description": "A high-end smartphone with 128GB storage and a 12MP camera.",
+    "code": "SMXYZ126",
+    "price": 699.99,
+    "status": true,
+    "stock": 150,
+    "category": "Electronics",
+    "thumbnail": "ejemplo",
+    "id": 7
+  },
+  {
+    "title": "Smartphone ABCDE",
+    "description": "A high-end smartphone with 128GB storage and a 12MP camera.",
+    "code": "SMXYZ126",
+    "price": 699.99,
+    "status": true,
+    "stock": 150,
+    "category": "Electronics",
+    "thumbnail": "ejemplo",
+    "id": 8
+  },
+  {
+    "title": "Smartphone ABCD",
+    "description": "A high-end smartphone with 128GB storage and a 12MP camera.",
+    "code": "SMXYZ126",
+    "price": 699.99,
+    "status": true,
+    "stock": 150,
+    "category": "Electronics",
+    "thumbnail": "ejemplo",
+    "id": 9
+  },
+  {
+    "title": "Smartphone ABC",
+    "description": "A high-end smartphone with 128GB storage and a 12MP camera.",
+    "code": "SMXYZ126",
+    "price": 699.99,
+    "status": true,
+    "stock": 150,
+    "category": "Electronics",
+    "thumbnail": "ejemplo",
+    "id": 10
+  }
+]
