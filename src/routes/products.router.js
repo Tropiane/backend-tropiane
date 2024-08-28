@@ -1,5 +1,6 @@
 import { Router } from "express";
 import fs from "fs";
+import uploader from "../middlewares/uploader.js";
 
 const productsRouter = Router();
 
@@ -22,7 +23,7 @@ productsRouter.get("/", (req, res)=>{
 
 productsRouter.get("/:id", (req, res)=>{
     const {id} = req.params;
-    const findProduct = products.findIndex(p=> p.id === parseInt(id));
+    const findProduct = products.findIndex(p => p.id === parseInt(id));
 
     findProduct !== -1 ? res.send(products[findProduct]) : res.send("Product not found");
 })
