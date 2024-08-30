@@ -66,4 +66,4 @@ productsRouter.delete("/:pid", (req, res)=>{
     res.send(`Product ${pid} deleted`);
 })
 
-export default productsRouter
+export default productsRouter;
