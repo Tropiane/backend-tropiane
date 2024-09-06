@@ -1,12 +1,28 @@
 import { Router } from "express";
+import productsmanager from "../managers/productsManager.js";
 
 const viewsRouter = Router();
 
+const products = productsmanager.getProducts();
+const newProducts = productsmanager.addProduct();
+
 viewsRouter.get("/products", (req, res)=>{
-    const data = {title: "Products"}
-    res.render("products", {
+    res.render("home", {
         css: "products.css",
-        data
+        products,
+    })
+})
+
+viewsRouter.get("/realtimeproducts", (req, res)=>{
+    res.render("realTimeProducts", {
+        css: "realtimeproducts.css",
+        products
+    })
+})
+viewsRouter.get("/realtimeproducts", (req, res)=>{
+    res.render("realTimeProducts", {
+        css: "realtimeproducts.css",
+        newProducts
     })
 })
 
