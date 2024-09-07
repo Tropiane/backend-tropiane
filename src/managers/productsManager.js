@@ -12,13 +12,8 @@ class ProductsManager {
         const data = JSON.parse(productFile);
         return data
     }
-
-    addProduct() {
-
-    }
 }
 
 const productsmanager = new ProductsManager();
-
 
 export default productsmanager

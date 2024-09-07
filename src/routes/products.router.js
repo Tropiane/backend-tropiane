@@ -1,7 +1,6 @@
 import { Router } from "express";
 import fs from "fs";
 import { io } from "../app.js";
-import uploader from "../middlewares/uploader.js";
 
 const productsRouter = Router();
 
@@ -13,7 +12,6 @@ const productFile =  fs.readFileSync(PATH, "utf-8");
 const data = JSON.parse(productFile);
 
 fs.existsSync(PATH) ? products = data : fs.writeFileSync(PATH, JSON.stringify(products, null, 2));
-
 
 productsRouter.get("/", (req, res)=>{
     const {limit} = req.query;
@@ -33,9 +31,11 @@ productsRouter.post("/", (req, res) => {
     const { title, description, code, price, status, stock, category, thumbnail } = req.body;
     const newProduct = { title, description, code, price, status, stock, category, thumbnail };
   
-    !title || !description || !code || !price || !status || !stock || !category && res.status(400).send("Incomplete data");
-  
-    newProduct.id = products.length > 0 ? parseInt(products[products.length - 1].id) + 1 : 1;
+    if (!title || !description || !code || !price || !status || !stock || !category) {
+        return res.status(400).send("All fields are required");
+    }
+
+    newProduct.id = parseInt(data[data.length-1].id) + 1;
     products.push(newProduct);
   
     fs.writeFileSync(PATH, JSON.stringify(products, null, 2));
