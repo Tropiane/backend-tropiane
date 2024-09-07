@@ -38,7 +38,7 @@ cartRouter.post("/:cid/product/:pid", (req, res) => {
     const findProduct = findCart.products.findIndex(p => p.id === parseInt(pid));
 
     const newProduct = {
-        id: findCart.products.length === 0 ? parseInt(1) : findCart.products[findCart.products.length - 1].id + 1,
+        id: findProduct === -1 ? parseInt(pid) : findCart.products[findCart.products.length - 1].id + 1,
         quantity: 1
     }
 
@@ -47,5 +47,6 @@ cartRouter.post("/:cid/product/:pid", (req, res) => {
     fs.writeFileSync(PATH, JSON.stringify(carts, null, 2));
     res.send(`Product ${pid} added to cart ${cid}`);
 });
+
 
 export default cartRouter;
