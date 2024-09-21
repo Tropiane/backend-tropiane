@@ -1,0 +1,75 @@
+h1{
+    color: rgb(35, 35, 39);
+    text-align: center;
+}
+#back{
+    transition: .3s;
+    border-radius: 10px;
+    background-color: black;
+}
+#back:hover{
+    transition: .3s;
+    border-radius: 30px 0px 0px 30px;
+    background-color: white;
+}
+#back a{
+    color: white;
+    text-decoration: none;
+    font-size: 150%;
+}
+#back a:hover{
+    color: black;
+    text-decoration: none;
+    font-size: 150%;
+}
+.createProduct{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#productForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 5px;
+    animation-duration: 2s;
+    animation-name: aparecer;
+    box-shadow: -1px 3px 16px -1px rgba(0,0,0,0.74);
+}
+@keyframes aparecer {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+    
+}
+#productForm input{
+    height: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+#productForm input:hover{
+    transition: .2s;
+    box-shadow: -1px 3px 16px -4px #f27121;
+}
+#submit{
+    transition: .3s;
+    background-color: rgb(35, 35, 39);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 200px;
+    margin: 10px;
+}
+#submit:active{
+    transition: .3s;
+    transform: scale(0.9);
+    background-image: linear-gradient(to right, #f27121, #e94057, #8a2387);
+}
