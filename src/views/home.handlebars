@@ -1,16 +1,22 @@
 <h1>Products</h1>
 
 <div class="productsContainer">
-        {{#each products}}
-                <div class="product">
-                        <p>{{this.title}}</p>
-                        <img src={{this.thumbnail}}>
-                        <p>${{this.price}}</p>
-                        <p>{{this.description}}</p>
-                </div>
-        {{/each}}
+    {{#if products.length}}
+    {{#each products}}
+    <div class="product">
+        <p>{{title}}</p>
+        <img src={{image}}>
+        <p>${{price}}</p>
+        <button id={{_id}} class="addToCart">Add to cart</button>
+        <button id={{_id}} class="details">Details</button>
+        <button id={{_id}} class="delete">Delete</button>
+    </div>
+    {{/each}}
+    {{else}}
+    <p>No hay productos disponible</p>
+    {{/if}}
 </div>
 
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/homeViews.js"></script>
+<script src="/js/home.js"></script>

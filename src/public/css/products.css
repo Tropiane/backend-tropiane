@@ -4,6 +4,9 @@
     box-sizing: border-box;
     font-family:Georgia, 'Times New Roman', Times, serif;
 }
+body{
+    background-color: #ffe6e7;
+}
 h1{
     color: rgb(35, 35, 39);
     text-align: center;

@@ -1,71 +1,61 @@
 import { Router } from "express";
-import fs from "fs";
-import { io } from "../app.js";
+import Products from "../models/products.model.js";
+import uploader from "../middlewares/uploader.js";
 
 const productsRouter = Router();
 
-const PATH = "src/public/productos.json";
+productsRouter.get("/", async (req, res)=>{
+    try {
+        const {limit} = req.query;
+        const products = await Products.find({});
 
-let products = [];
+        const limitProducts = limit ? products.slice(0, parseInt(limit)) : products;
 
-const productFile =  fs.readFileSync(PATH, "utf-8");
-const data = JSON.parse(productFile);
+        res.send(limitProducts)
 
-fs.existsSync(PATH) ? products = data : fs.writeFileSync(PATH, JSON.stringify(products, null, 2));
-
-productsRouter.get("/", (req, res)=>{
-    const {limit} = req.query;
-    const limitProducts = limit ? data.slice(0, parseInt(limit)) : data;
-    
-    res.send(limitProducts)
-})
-
-productsRouter.get("/:id", (req, res)=>{
-    const {id} = req.params;
-    const findProduct = products.findIndex(p => p.id === parseInt(id));
-
-    findProduct !== -1 ? res.send(products[findProduct]) : res.status(404).send("Product not found");
-})
-
-productsRouter.post("/", (req, res) => {
-    const { title, description, code, price, status, stock, category, thumbnail } = req.body;
-    const newProduct = { title, description, code, price, status, stock, category, thumbnail };
-  
-    if (!title || !description || !code || !price || !status || !stock || !category) {
-        return res.status(400).send("All fields are required");
+    } catch (error) {
+        res.json({message: error.message})
     }
-
-    newProduct.id = parseInt(data[data.length-1].id) + 1;
-    products.push(newProduct);
-  
-    fs.writeFileSync(PATH, JSON.stringify(products, null, 2));
-  
-    io.emit('productAdded', newProduct);
-  
-    res.status(201).send(newProduct);
-  });
-
-productsRouter.put("/:pid", (req, res)=>{
-    const {pid} = req.params;
-    const {title, description, code, price, status, stock, category, thumbnail} = req.body;
-
-    const findProduct = products.findIndex(p=> p.id === parseInt(pid));
-    const modifyedProduct = {title, description, code, price, status, stock, category, thumbnail};
-
-    modifyedProduct.id = products[findProduct].id
-    findProduct === -1 ? res.status(404).send(`Product ${pid} not found`) :  products[findProduct] = modifyedProduct;
-
-    fs.writeFileSync(PATH, JSON.stringify(products, null, 2));
-    res.send(`Product ${pid} modified`);
 })
 
-productsRouter.delete("/:pid", (req, res)=>{
-    const {pid} = req.params;
-    const findProduct = products.findIndex(p => p.id === parseInt(pid));
+productsRouter.get("/:id", async (req, res)=>{
+    const {id} = req.params;
+    const findProduct = await Products.findById({_id: id})
+    res.status(200).json(findProduct)
+})
 
-    findProduct !== -1 ? products.splice(findProduct, 1) : res.status(201).send("Product not found");
+productsRouter.post("/", uploader.single('image'), async (req, res) => {
+    try {
+        const body = req.body;
+        const image = req.file ? `/images/${req.file.filename}` : null;
+
+        const newProduct = {
+            ...body,
+            image
+        };
+
+        await Products.create(newProduct);
+        res.status(200).json({ message: "Product created", product: newProduct });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+productsRouter.patch("/:id", async (req, res)=>{
+    try {
+        const {id} = req.params;
+        const body = req.body;
+        await Products.updateOne({_id: id}, body);
+        res.status(200).json({message: "product updated"})
+    } catch (error) {
+        res.status(400).json({message: error.message})
+    }
+})
+
+productsRouter.delete("/:pid", async (req, res)=>{
+    const {pid} = req.params;
+    await Products.deleteOne({_id: pid});
     
-    fs.writeFileSync(PATH, JSON.stringify(products, null, 2));
     res.send(`Product ${pid} deleted`);
 })
 

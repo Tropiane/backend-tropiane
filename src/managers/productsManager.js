@@ -1,4 +1,5 @@
-import fs from "fs";
+import { json } from "express";
+import Products from "../models/products.model.js";
 
 class ProductsManager {
 
@@ -7,13 +8,25 @@ class ProductsManager {
 
     }
 
-    getProducts() {
-        const productFile =  fs.readFileSync("src/public/productos.json", "utf-8");
-        const data = JSON.parse(productFile);
-        return data
+    async getProducts() {
+        try {
+            return await Products.find({});
+        } catch (error) {
+            return json({message: error.message})
+        }
+    }
+
+    async getProductById(id) {
+        try {
+            return await Products.findById({_id: id});
+        } catch (error) {
+            return json({message: error.message})
+        }
     }
 }
 
 const productsmanager = new ProductsManager();
+console.log(productsmanager.getProducts());
+
 
 export default productsmanager
