@@ -2,19 +2,14 @@ import { json, Router } from "express";
 import productsmanager from "../managers/productsManager.js";
 
 const viewsRouter = Router();
-const getProducts = productsmanager.getProducts();
 
-viewsRouter.get("/products", async (req, res)=>{
-    try {
-        const products = await getProducts;
-    
+viewsRouter.get("/products", async(req, res)=>{
+
+    const products = await productsmanager.getProducts({});
         res.render("home", {
             css: "products.css",
             products,
         })
-    } catch (error) {
-        res.send(json({message: error.message}))
-    }
 })
 
 viewsRouter.get("/createProducts", async (req, res)=>{

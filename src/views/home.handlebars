@@ -1,19 +1,24 @@
+<nav class="navBar">
+    <a href="/cart">Cart</a>
+    <a href="/products">Products</a>
+    <a href="/createProducts">Create Products</a>
+</nav>
 <h1>Products</h1>
 
 <div class="productsContainer">
     {{#if products.length}}
     {{#each products}}
     <div class="product">
-        <p>{{title}}</p>
         <img src={{image}}>
-        <p>${{price}}</p>
+        <p class="title">{{title}}</p>
+        <p class="price">${{price}}</p>
         <button id={{_id}} class="addToCart">Add to cart</button>
         <button id={{_id}} class="details">Details</button>
         <button id={{_id}} class="delete">Delete</button>
     </div>
     {{/each}}
     {{else}}
-    <p>No hay productos disponible</p>
+    <h2>No hay productos disponibles</h2>
     {{/if}}
 </div>
 

@@ -1,10 +1,19 @@
-<div class="productDetails">
-        {{#each product}}
-            <h1>{{title}}</h1>
-            <img src={{thumbnail}}>
-            <p>{{description}}</p>
-            <p>{{price}}</p>
-            <p>{{stock}}</p>
-            <p>{{category}}</p>
-        {{/each}}
+<nav class="navBar">
+    <a href="/cart">Cart</a>
+    <a href="/products">Products</a>
+    <a href="/createProducts">Create Products</a>
+</nav>
+
+    {{#if undefined}}
+        <div>Product not found</div>
+    {{else}}
+<div class="productContainer">
+    <img src={{product.image}}>
+    <div class="productDetails">
+        <h1>{{product.title}}</h1>
+        <p>{{product.description}}</p>
+        <p>USD ${{product.price}}</p>
+        <p>Stock: {{product.stock}}</p>
+    </div>
 </div>
+    {{/if}}
