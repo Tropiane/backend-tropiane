@@ -22,9 +22,19 @@ body{
     font-size: 20px;
 }
 
-h1{
-    color: rgb(35, 35, 39);
-    text-align: center;
+#search{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#search input{
+    width: 200px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px;
 }
 h2{
     margin-top: 10px;
@@ -32,10 +42,54 @@ h2{
     border-radius: 10px;
     background-color: #d8faef;
 }
+
+section{
+    display: grid;
+    grid-template-columns:1fr 9fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+    'filter products'
+    ;
+}
+
 .productsContainer{
+    grid-area: products;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 5%;
+    padding: 10px;
+    animation-name: aparecer;
+    animation-duration: .5s;
+}
+
+@keyframes aparecer {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+.productFilters{	
+    grid-area: filter;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.productFilters h2{
+    text-align: center;
+    font-size: 20px;
+}
+.productFilters ul{	
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 10px;
+    border-radius: 10px;
+}
+.productFilters li{
+    cursor: pointer;
 }
 .product{
     border: 1px solid black;
@@ -70,4 +124,19 @@ h2{
     text-align: left;
     color: #f33900;
     font-weight: bold;
+}
+
+.pagesContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+.pagesContainer button{
+    border-radius: 5px;
+    height: 30px;
+    width: 30px;
+    font-weight: bold;
+    font-size: 20px;
 }

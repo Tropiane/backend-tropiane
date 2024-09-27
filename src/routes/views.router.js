@@ -4,17 +4,28 @@ import productsmanager from "../managers/productsManager.js";
 const viewsRouter = Router();
 
 viewsRouter.get("/products", async(req, res)=>{
+    const limit = req.query.limit || 10;
+    const page = parseInt(req.query.page) || 1;
+    const category = req.query.category;
+    const price = parseInt(req.query.price) || null;
+    const status = req.query.status === "true";
 
-    const products = await productsmanager.getProducts({});
+    try {
+        const products = await productsmanager.getPaginatedProducts(page, limit, category, price, status);
         res.render("home", {
             css: "products.css",
-            products,
+            products
         })
+        
+    } catch (error) {
+        console.log('error al obtener los productos  ',error);
+        res.status(500).send("Error al obtener los productos");
+    }
 })
+
 
 viewsRouter.get("/createProducts", async (req, res)=>{
     try {
-
         res.render("createProducts", {
             css: "createProducts.css"
         })
