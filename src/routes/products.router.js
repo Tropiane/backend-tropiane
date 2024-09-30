@@ -1,17 +1,27 @@
 import { Router } from "express";
-import Products from "../models/products.model.js";
+import productsmanager from "../managers/productsManager.js";
 import uploader from "../middlewares/uploader.js";
 
 const productsRouter = Router();
 
 productsRouter.get("/", async (req, res)=>{
+    const limit = req.query.limit || 10;
+    const page = parseInt(req.query.page) || 1;
+    const category = req.query.category;
+    const price = parseInt(req.query.price) || null;
+    let status;
+
+    if (req.query.status === "true") {
+        status = true;
+    } else if (req.query.status === "false") {
+        status = false;
+    } else {
+        status = undefined;
+    }
     try {
-        const {limit} = req.query;
-        const products = await Products.find({});
-
-        const limitProducts = limit ? products.slice(0, parseInt(limit)) : products;
-
-        res.send(limitProducts)
+        const products = await productsmanager.getPaginatedProducts(page, limit, category, price, status);
+        
+        res.json(result)
 
     } catch (error) {
         res.json({message: error.message})

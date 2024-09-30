@@ -136,7 +136,20 @@ section{
 .pagesContainer button{
     border-radius: 5px;
     height: 30px;
-    width: 30px;
+    width: max-content;
     font-weight: bold;
     font-size: 20px;
+}
+
+.all{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.all a{
+    text-decoration: none;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
 }

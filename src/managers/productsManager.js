@@ -8,7 +8,9 @@ class ProductsManager {
     async getPaginatedProducts(page, limit, category, price, status) {
         const query = {};
         category && (query.category = category);
-        status !== undefined && (query.status = status);
+        if (status !== undefined) {
+            query.status = status;
+        }
         const options = {
             page: page || 1,
             limit: limit || 10,

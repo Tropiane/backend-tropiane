@@ -33,4 +33,6 @@ const ProductSchema = new mongoose.Schema({
 
 ProductSchema.plugin(mongoosePaginate)
 
-export default mongoose.model("Products", ProductSchema)
+const Products = mongoose.model("Products", ProductSchema)
+
+export default Products;
