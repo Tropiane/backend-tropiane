@@ -3,6 +3,20 @@ const pagesContainer = document.querySelector(".pagesContainer");
 const filters = document.querySelector(".productFilters");
 const categories = document.querySelectorAll(".category");
 const stock = document.querySelectorAll(".stock");
+const cart = localStorage.getItem("cartID");
+
+async function createCart() {
+  const response = await fetch("/api/cart", {method: "POST"});
+  const cartId = await response.json();
+  
+  localStorage.setItem("cartID", cartId);
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!cart) {
+    await createCart();
+  }
+});
 
 productsContainer.addEventListener("click", async (e) => {
   if (e.target.classList.contains("delete")) {
@@ -19,6 +33,10 @@ productsContainer.addEventListener("click", async (e) => {
     window.location.href = `/details/${e.target.id}`;
   }
 
+  if (e.target.classList.contains("addToCart")) {
+
+
+  }
 });
 
 

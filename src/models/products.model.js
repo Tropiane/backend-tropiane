@@ -28,6 +28,10 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true,
         index: true
+    },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cart"
     }
 });
 

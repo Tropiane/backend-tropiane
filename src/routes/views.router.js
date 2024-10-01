@@ -1,9 +1,11 @@
 import { json, Router } from "express";
 import productsmanager from "../managers/productsManager.js";
+import cartsManager from "../managers/cartsManager.js";
 
 const viewsRouter = Router();
 
 viewsRouter.get("/products", async(req, res)=>{
+
     const limit = req.query.limit || 10;
     const page = parseInt(req.query.page) || 1;
     const category = req.query.category;
