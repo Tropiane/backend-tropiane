@@ -59,4 +59,18 @@ viewsRouter.get("/details/:pid", async (req, res)=>{
     
 })
 
+viewsRouter.get("/cart/:cartId", async (req, res)=>{
+    try {
+        const {cartId} = req.params;
+        const cart = await cartsManager.getCart(cartId);
+        
+        res.render("cart",{
+            css: "cart.css",
+            cart
+        })
+    } catch (error) {
+      console.log(error); 
+    }
+})
+
 export default viewsRouter

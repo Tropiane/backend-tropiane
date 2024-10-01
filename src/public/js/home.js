@@ -4,6 +4,7 @@ const filters = document.querySelector(".productFilters");
 const categories = document.querySelectorAll(".category");
 const stock = document.querySelectorAll(".stock");
 const cart = localStorage.getItem("cartID");
+const cartId = document.querySelector("#cart");
 
 async function createCart() {
   const response = await fetch("/api/cart", {method: "POST"});
@@ -34,8 +35,15 @@ productsContainer.addEventListener("click", async (e) => {
   }
 
   if (e.target.classList.contains("addToCart")) {
-
-
+    const cart = localStorage.getItem("cartID");
+    const productId = e.target.id;
+    try {
+      await fetch(`/api/cart/${cart}/product/${productId}`, {
+        method: "PUT",
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 });
 
@@ -82,3 +90,8 @@ filters.addEventListener("change", (e) => {
     updateURLParameter(param, e.target.value);
   });
 });
+
+cartId.addEventListener("click", async (e) => {
+  e.preventDefault();
+  window.location.href = `/cart/${cart}`;
+})

@@ -15,11 +15,23 @@ class CartsManager{
         return newCart._id;
     }
 
-    async getCart(){
-        const cart = localStorage.getItem("cartID");
+    async getCart(cart){
         const cartDB = await Cart.findById(cart);
         console.log(cartDB);
-        
+    }
+
+    async addProductToCart(cart, product) {
+        try {
+            const cartDB = await Cart.findById(cart);
+            if (!cartDB) {
+                throw new Error("Cart not found");
+            }
+            cartDB.products.push({ product });
+            let result = await cartDB.save();
+            console.log(result);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+body{
+    background-color: #ffe6e7;
+    height: 100vh;
+}
+.navBar{
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+    align-items: center;
+    padding: 10px;
+    background-color: #000000;
+    height: 10vh;
+}
+.navBar a{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+h1{
+    text-align: center;
+}
