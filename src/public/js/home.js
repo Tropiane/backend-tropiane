@@ -13,6 +13,14 @@ async function createCart() {
   localStorage.setItem("cartID", cartId);
 }
 
+function updateURLParameter(param, value) {
+  const currentUrl = new URL(window.location.href);
+  
+  currentUrl.searchParams.set(param, value);
+  
+  window.location.href = currentUrl.href;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   if (!cart) {
     await createCart();
@@ -21,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 productsContainer.addEventListener("click", async (e) => {
   if (e.target.classList.contains("delete")) {
-    console.log("delete product " + e.target.id);
+
     try {
       await fetch(`/api/products/${e.target.id}`, {
         method: "DELETE",
@@ -47,7 +55,6 @@ productsContainer.addEventListener("click", async (e) => {
   }
 });
 
-
 pagesContainer.addEventListener("click", async (e) => {
   e.preventDefault();
 
@@ -62,14 +69,6 @@ pagesContainer.addEventListener("click", async (e) => {
   }
 });
 
-
-function updateURLParameter(param, value) {
-  const currentUrl = new URL(window.location.href);
-  
-  currentUrl.searchParams.set(param, value);
-  
-  window.location.href = currentUrl.href;
-}
 
 filters.addEventListener("change", (e) => {
   e.preventDefault();

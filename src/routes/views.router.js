@@ -63,10 +63,12 @@ viewsRouter.get("/cart/:cartId", async (req, res)=>{
     try {
         const {cartId} = req.params;
         const cart = await cartsManager.getCart(cartId);
-
+        const sumTotal = await cartsManager.getTotal(cartId);
+        
         res.render("cart",{
             css: "cart.css",
-            cart
+            cart,
+            sumTotal
         })
     } catch (error) {
       console.log(error); 

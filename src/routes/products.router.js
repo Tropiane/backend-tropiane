@@ -1,6 +1,7 @@
 import { Router } from "express";
 import productsmanager from "../managers/productsManager.js";
 import uploader from "../middlewares/uploader.js";
+import Products from "../models/products.model.js";
 
 const productsRouter = Router();
 

@@ -5,21 +5,27 @@
 </nav>
 
 <h1>Tu carrito</h1>
-
+<button class="emptyCart">Vaciar Carrito</button>
 <div class="cartContainer">
-    <p class="total">Total: ${{total}}</p>
 
+    
+    {{#if cart}}
+    <p class="total">Total: ${{sumTotal}}</p>
     {{#each cart}}
         <div class="cartItem">
             <img src={{product.image}}>
             <div class="cartItemDetails">
                 <p>{{product.title}}</p>
-                <p>${{product.price}}</p>
-                <p>Stock: {{product.stock}}</p>
+                <p class="price">${{product.price}}</p>
+                <p >Cantidad: <button class="rest" id="{{_id}}">-</button> <span class="quantity">{{product.quantity}}</span> <button class="sum" id="{{_id}}">+</button></p>
                 <button id="{{_id}}" class="delete">Delete</button>
             </div>
         </div>
     {{/each}}
-
+    {{else}}
+    <h2>No hay productos en el carrito</h2>
+    {{/if}}
 </div>
 
+
+<script src="/js/cart.js"></script>

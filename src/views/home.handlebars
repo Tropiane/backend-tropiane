@@ -4,15 +4,6 @@
     <a href="/createProducts">Create Products</a>
 </nav>
 
-<div id="search">
-    <input type="text" id="searchInput">
-    <div id="searchResults">
-        {{#each filterProduct.docs}}
-            <p>{{title}}</p>
-        {{/each}}
-    </div>
-</div>
-
 <section>
 
 <div class="productFilters">
@@ -23,7 +14,7 @@
         <li>Mayor <input type="checkbox" class="price" value="-1"></li>
         <li>Menor <input type="checkbox" class="price" value="1"></li>
         <h3>Categoría</h3>
-        <li>Tecnologia <input type="checkbox" class="category" value="Tecnología"></li>
+        <li>Tecnología <input type="checkbox" class="category" value="Tecnologia"></li>
         <li>Ropa <input type="checkbox" class="category" value="Ropa"></li>
         <li>Herramientas <input type="checkbox" class="category" value="Herramientas"></li>
         <li>Deportes <input type="checkbox" class="category" value="Deportes"></li>
