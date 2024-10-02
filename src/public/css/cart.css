@@ -27,3 +27,39 @@ body{
 h1{
     text-align: center;
 }
+
+.cartContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-top: 20px;
+}
+
+.cartItem{
+    display: grid;
+    background-color: #e2e2e2;
+    grid-template-columns: repeat(2, 1fr);
+    border: 1px solid rgba(0, 0, 0, 0.39);
+    border-radius: 15px;
+    margin: 10px;
+    padding: 5px;
+    width: 50%;
+    grid-template-areas: 
+    "image details"
+    ;
+}
+.cartItem img{
+    grid-area: image;
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 5px;
+    margin-top: 3%;
+}
+.cartItemDetails{
+    grid-area: details;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}

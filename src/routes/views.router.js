@@ -63,7 +63,7 @@ viewsRouter.get("/cart/:cartId", async (req, res)=>{
     try {
         const {cartId} = req.params;
         const cart = await cartsManager.getCart(cartId);
-        
+
         res.render("cart",{
             css: "cart.css",
             cart

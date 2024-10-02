@@ -16,8 +16,9 @@ class CartsManager{
     }
 
     async getCart(cart){
-        const cartDB = await Cart.findById(cart);
-        console.log(cartDB);
+        let cartDB = await Cart.findById(cart).populate("products.product");
+        
+        return cartDB.products;
     }
 
     async addProductToCart(cart, product) {
@@ -28,7 +29,7 @@ class CartsManager{
             }
             cartDB.products.push({ product });
             let result = await cartDB.save();
-            console.log(result);
+
         } catch (error) {
             console.log(error);
         }

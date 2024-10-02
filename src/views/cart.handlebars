@@ -5,3 +5,21 @@
 </nav>
 
 <h1>Tu carrito</h1>
+
+<div class="cartContainer">
+    <p class="total">Total: ${{total}}</p>
+
+    {{#each cart}}
+        <div class="cartItem">
+            <img src={{product.image}}>
+            <div class="cartItemDetails">
+                <p>{{product.title}}</p>
+                <p>${{product.price}}</p>
+                <p>Stock: {{product.stock}}</p>
+                <button id="{{_id}}" class="delete">Delete</button>
+            </div>
+        </div>
+    {{/each}}
+
+</div>
+
