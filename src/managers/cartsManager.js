@@ -36,25 +36,43 @@ class CartsManager{
     
     
 
-    async addProductToCart(cart, product, quantity) {
+    async addProductToCart(cart, product) {
         try {
             const cartDB = await Cart.findById(cart);
             if (!cartDB) {
                 throw new Error("Cart not found");
             }
-    
-            const findProduct = cartDB.products.findIndex((p) => p.product.toString() === product);
-            const productDB = cartDB.products.find((p) => p._id.toString() === product);
-            console.log(productDB.quantity);
-            productDB ? productDB.quantity = productDB.quantity + 1 : cartDB.products.push({product: product, quantity: 1});
             
-            let result = await cartDB.save();
-            return result;
+            const findProduct = cartDB.products.findIndex((p) => p.product.toString() === product);
+            const quantity = 1;
+            if (findProduct === -1) {
+                cartDB.products.push({product});
+            } else {
+                cartDB.products.find((p) => p.product.toString() === product).quantity + 1;
+            }
+
+            return await cartDB.save();
         } catch (error) {
             console.log(error);
         }
     }
-    
+
+    async sumProducts(cart, product, quantity) {
+        try {
+            const cartDB = await Cart.findById(cart);
+            if (!cartDB) {
+                throw new Error("Cart not found");
+            }
+            const productDB = cartDB.products.find((p) => p._id.toString() === product);
+            if (!productDB) {
+                throw new Error("Product not found");
+            }
+            productDB.quantity = quantity;
+            return cartDB.save();
+        } catch (error) {
+            
+        }
+    }
 
     async deleteProductFromCart(cart, product) {
         try {
