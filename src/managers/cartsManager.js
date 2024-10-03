@@ -21,14 +21,20 @@ class CartsManager{
         return cartDB.products;
     }
 
-    async getTotal(cart){
+    async getTotal(cart) {
         let cartDB = await Cart.findById(cart).populate("products.product");
         let totalPrice = 0;
         cartDB.products.forEach((product) => {
-            totalPrice += product.product.price;
+            if (product.product) {
+                totalPrice += product.product.price;
+            } else {
+                console.log(`Producto no encontrado para el ID: ${product._id}`);
+            }
         });
         return totalPrice;
     }
+    
+    
 
     async addProductToCart(cart, product, quantity) {
         try {
@@ -36,17 +42,19 @@ class CartsManager{
             if (!cartDB) {
                 throw new Error("Cart not found");
             }
-            const findProduct = cartDB.products.findIndex((p) => p.product._id.toString() === product);
-            if (findProduct === -1) {
-                cartDB.products.push({ product, quantity });
-            } else {
-                cartDB.products[findProduct].quantity += quantity;
-            }
+    
+            const findProduct = cartDB.products.findIndex((p) => p.product.toString() === product);
+            const productDB = cartDB.products.find((p) => p._id.toString() === product);
+            console.log(productDB.quantity);
+            productDB ? productDB.quantity = productDB.quantity + 1 : cartDB.products.push({product: product, quantity: 1});
+            
             let result = await cartDB.save();
+            return result;
         } catch (error) {
             console.log(error);
         }
     }
+    
 
     async deleteProductFromCart(cart, product) {
         try {

@@ -18,22 +18,24 @@ cartProduct.addEventListener("click", async (e) => {
         }
     }
 
-    // if (e.target.classList.contains("sum")){
-    //     const productId = e.target.id;
-    //     let quantity = Number(e.target.parentElement.querySelector(".quantity").textContent) + 1;
+    if (e.target.classList.contains("sum")) {
+        const productId = e.target.id;
+        let quantityElement = e.target.parentElement.querySelector(".quantity");
+        let quantity = parseInt(quantityElement.textContent);
+        quantityElement.textContent = quantity + 1;
         
-    //     try {
-    //         await fetch(`/api/cart/${cart}/product/${productId}`, {
-    //             method: "PUT",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify({quantity}),
-    //         });
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+        try {
+            await fetch(`/api/cart/${cart}/product/${productId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ quantity: quantity + 1 })
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     // if (e.target.classList.contains("rest")){
     //     const productId = e.target.id;

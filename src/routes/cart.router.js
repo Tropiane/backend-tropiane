@@ -16,13 +16,15 @@ cartsRouter.post('/', async (req, res) => {
 cartsRouter.put("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
+    
     try {
         await cartsManager.addProductToCart(cid, pid, quantity);
-        res.send("Product added to cart");
+        res.send("Product added/updated in cart");
     } catch (error) {
         console.log(error);
+        res.status(500).send("Error adding product to cart");
     }
-})
+});
 
 cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
