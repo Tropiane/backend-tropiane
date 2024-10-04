@@ -30,8 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 productsContainer.addEventListener("click", async (e) => {
   e.target.classList.contains("details") &&(window.location.href = `/details/${e.target.id}`)
 
-
-
   if (e.target.classList.contains("addToCart")) {
     const cart = localStorage.getItem("cartID");
     const productId = e.target.id;
@@ -58,7 +56,6 @@ pagesContainer.addEventListener("click", async (e) => {
       window.location.href = `/products?page=${page}`;
   }
 });
-
 
 filters.addEventListener("change", (e) => {
   e.preventDefault();

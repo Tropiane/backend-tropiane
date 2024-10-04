@@ -1,6 +1,5 @@
 import express from "express";
 import handlebars from 'express-handlebars';
-import { Server } from "socket.io";
 import mongoose from "mongoose";
 
 import __dirname from "./utils.js";
@@ -35,16 +34,3 @@ app.use("/api/cart", cartRouter);
 app.use("/", viewsRouter);
 
 mongoose.connect('mongodb+srv://fedetrop23:coder@codercluster.8ewf4.mongodb.net/?retryWrites=true&w=majority&appName=CoderCluster');
-
-const io = new Server(server);
-
-io.on("connection", (socketClient) => {
-    console.log(`New socket conected with id: ${socketClient.id}`);
-
-    socketClient.on("product", (data)=>{
-
-    })
-
-})
-
-export { io };

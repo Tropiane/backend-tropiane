@@ -1,4 +1,6 @@
 const formProduct = document.getElementById("productForm");
+const cart = localStorage.getItem("cartID");
+const cartId = document.querySelector("#cart");
 
 formProduct.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -14,4 +16,9 @@ formProduct.addEventListener("submit", async (e) => {
     
   }
   
+})
+
+cartId.addEventListener("click", async (e) => {
+  e.preventDefault();
+  window.location.href = `/cart/${cart}`;
 })

@@ -6,45 +6,42 @@
 
 <section>
 
-<div class="productFilters">
+    <div class="productFilters">
 
-        <ul><h2>Filtrar por</h2>
-        <li class="all"><a href="/products">Todos</a></li>
-        <h3>Precio</h3>
-        <li>Mayor <input type="checkbox" class="price" value="-1"></li>
-        <li>Menor <input type="checkbox" class="price" value="1"></li>
-        <h3>Categoría</h3>
-        <li>Tecnología <input type="checkbox" class="category" value="Tecnologia"></li>
-        <li>Ropa <input type="checkbox" class="category" value="Ropa"></li>
-        <li>Herramientas <input type="checkbox" class="category" value="Herramientas"></li>
-        <li>Deportes <input type="checkbox" class="category" value="Deportes"></li>
-        <li>Juguetes <input type="checkbox" class="category" value="Juguetes"></li>
-        <h3>Stock</h3>
-        <li>Disponible <input type="checkbox" class="stock" value="true"></li>
-        <li>No disponible <input type="checkbox" class="stock" value="false"></li>
-        </ul>
+            <ul><h2>Filtrar por</h2>
+            <li class="all"><a href="/products">Todos</a></li>
+            <h3>Precio</h3>
+            <li>Mayor <input type="checkbox" class="price" value="-1"></li>
+            <li>Menor <input type="checkbox" class="price" value="1"></li>
+            <h3>Categoría</h3>
+            <li>Tecnología <input type="checkbox" class="category" value="Tecnologia"></li>
+            <li>Ropa <input type="checkbox" class="category" value="Ropa"></li>
+            <li>Herramientas <input type="checkbox" class="category" value="Herramientas"></li>
+            <li>Deportes <input type="checkbox" class="category" value="Deportes"></li>
+            <li>Juguetes <input type="checkbox" class="category" value="Juguetes"></li>
+            <h3>Stock</h3>
+            <li>Disponible <input type="checkbox" class="stock" value="true"></li>
+            <li>No disponible <input type="checkbox" class="stock" value="false"></li>
+            </ul>
 
-</div>
+    </div>
 
-<div class="productsContainer">
-    {{#if products.docs}}
-    {{#each products.docs}}
-        <div class="product">
-            <img src={{image}} alt="{{title}}">
-            <p class="title">{{title}}</p>
-            <p class="price">${{price}}</p>
-            <button id="{{_id}}" class="addToCart">Add to cart</button>
-            <button id="{{_id}}" class="details">Details</button>
-        </div>
-    {{/each}}
-    {{else}}
-    <h2>No hay productos disponibles</h2>
-    {{/if}}
-</div>
-
-
+    <div class="productsContainer">
+        {{#if products.docs}}
+        {{#each products.docs}}
+            <div class="product">
+                <img src={{image}} alt="{{title}}">
+                <p class="title">{{title}}</p>
+                <p class="price">${{price}}</p>
+                <button id="{{_id}}" class="addToCart">Add to cart</button>
+                <button id="{{_id}}" class="details">Details</button>
+            </div>
+        {{/each}}
+        {{else}}
+        <h2>No hay productos disponibles</h2>
+        {{/if}}
+    </div>
 </section>
-
 
 <div class="pagesContainer">
     {{#if products.hasPrevPage}}
@@ -56,7 +53,4 @@
     {{/if}}
 </div>
 
-
-
-<script src="/socket.io/socket.io.js"></script>
 <script src="/js/home.js"></script>

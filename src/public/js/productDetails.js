@@ -2,7 +2,6 @@ const container = document.querySelector(".productContainer");
 const cart = localStorage.getItem("cartID");
 const cartId = document.querySelector("#cart");
 
-
 cartId.addEventListener("click", async (e) => {
     e.preventDefault();
     window.location.href = `/cart/${cart}`;
