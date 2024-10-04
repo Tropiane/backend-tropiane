@@ -28,19 +28,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 productsContainer.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("delete")) {
+  e.target.classList.contains("details") &&(window.location.href = `/details/${e.target.id}`)
 
-    try {
-      await fetch(`/api/products/${e.target.id}`, {
-        method: "DELETE",
-      });
-      e.target.parentElement.remove();
-    } catch (error) {
-      console.log(error);
-    }
-  } else if(e.target.classList.contains("details")) {
-    window.location.href = `/details/${e.target.id}`;
-  }
+
 
   if (e.target.classList.contains("addToCart")) {
     const cart = localStorage.getItem("cartID");

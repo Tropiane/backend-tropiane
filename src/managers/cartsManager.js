@@ -24,17 +24,18 @@ class CartsManager{
     async getTotal(cart) {
         let cartDB = await Cart.findById(cart).populate("products.product");
         let totalPrice = 0;
+
+        
         cartDB.products.forEach((product) => {
+            
             if (product.product) {
-                totalPrice += product.product.price;
+                totalPrice += product.product.price * product.quantity;
             } else {
                 console.log(`Producto no encontrado para el ID: ${product._id}`);
             }
         });
         return totalPrice;
     }
-    
-    
 
     async addProductToCart(cart, product) {
         try {
@@ -42,35 +43,31 @@ class CartsManager{
             if (!cartDB) {
                 throw new Error("Cart not found");
             }
-            
-            const findProduct = cartDB.products.findIndex((p) => p.product.toString() === product);
-            const quantity = 1;
-            if (findProduct === -1) {
-                cartDB.products.push({product});
-            } else {
-                cartDB.products.find((p) => p.product.toString() === product).quantity + 1;
-            }
 
-            return await cartDB.save();
+            const productDB = cartDB.products.find((p) => p.product.toString() === product);
+            productDB  !== undefined ? productDB.quantity  ++: cartDB.products.push({product: product});
+            
+            let result = await cartDB.save();
+            return result;
         } catch (error) {
             console.log(error);
         }
     }
 
-    async sumProducts(cart, product, quantity) {
+    async updateProductQuantity(cart, product, quantity) {
         try {
             const cartDB = await Cart.findById(cart);
             if (!cartDB) {
                 throw new Error("Cart not found");
             }
             const productDB = cartDB.products.find((p) => p._id.toString() === product);
-            if (!productDB) {
-                throw new Error("Product not found");
-            }
-            productDB.quantity = quantity;
-            return cartDB.save();
-        } catch (error) {
             
+            productDB ? productDB.quantity = quantity : null;
+            
+            let result = await cartDB.save();
+            return result;
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -86,8 +83,8 @@ class CartsManager{
             }else{
                 cartDB.products.splice(findProduct, 1);
                 let result = await cartDB.save();
+                return result;
             }
-            console.log(findProduct);
             
         } catch (error) {
             console.log(error);
@@ -102,6 +99,7 @@ class CartsManager{
             }
             cartDB.products = [];
             let result = await cartDB.save();
+            return result;
         } catch (error) {
             console.log(error);
         }

@@ -1,5 +1,5 @@
 <nav class="navBar">
-    <a href="/cart">Cart</a>
+    <a id="cart">Cart</a>
     <a href="/products">Products</a>
     <a href="/createProducts">Create Products</a>
 </nav>
@@ -8,7 +8,10 @@
         <div>Product not found</div>
     {{else}}
 <div class="productContainer">
-    <img src={{product.image}}>
+    <div class="productImage">
+        <img src={{product.image}}>
+        <button class="addToCart" id="{{product._id}}">Add to cart</button>
+    </div>
     <div class="productDetails">
         <h1>{{product.title}}</h1>
         <p>{{product.description}}</p>
@@ -17,3 +20,5 @@
     </div>
 </div>
     {{/if}}
+
+    <script src="/js/productDetails.js"></script>

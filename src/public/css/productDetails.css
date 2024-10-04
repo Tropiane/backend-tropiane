@@ -17,6 +17,24 @@ body{
     background-color: #000000;
     height: 10vh;
 }
+.productContainer{
+    height: 90vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    margin-left: 50px;
+    animation-duration: .5s;
+    animation-name: aparecer;
+}
+@keyframes aparecer {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
 .navBar a{
     text-decoration: none;
     color: rgb(255, 255, 255);
@@ -43,16 +61,28 @@ body{
     border-radius: 5px;
     padding: 10px;
 }
-.productContainer{
-    height: 90vh;
+.productImage{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: left;
-    margin-left: 50px;
+    justify-content: center;
 }
-.productContainer img{
+.productImage img{
     border-radius: 10px;
     width: 300px;
     height: 300px;
+}
+.productImage button{
+    cursor: pointer;
+    margin: 10px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: #f7f1a3;
+}
+.productImage button:active{
+    transition: .2s;
+    transform: scale(0.9);
+    background-image: linear-gradient(to right, #f27121, #e94057, #8a2387);
 }

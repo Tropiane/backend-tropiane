@@ -3,10 +3,20 @@ import cartsManager from '../managers/cartsManager.js';
 
 const cartsRouter = Router();
 
+cartsRouter.get('/:cid', async (req, res) => {
+    const { cid } = req.params;
+    try {
+        const cart = await cartsManager.getCart(cid);
+        res.send(cart);
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 cartsRouter.post('/', async (req, res) => {
     try {
         const id = await cartsManager.createCart();
-        res.send(id);
+        res.send('cart Id created: ' + id);
     } catch (error) {
         console.log(error);
         
@@ -17,8 +27,7 @@ cartsRouter.put("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
     try {
-    
-        await cartsManager.addProductToCart(cid, pid, quantity);
+        quantity ? await cartsManager.updateProductQuantity(cid, pid, quantity) : await cartsManager.addProductToCart(cid, pid);
         res.send("Product added/updated in cart");
     } catch (error) {
         console.log(error);

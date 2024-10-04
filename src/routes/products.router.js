@@ -5,29 +5,41 @@ import Products from "../models/products.model.js";
 
 const productsRouter = Router();
 
-productsRouter.get("/", async (req, res)=>{
-    const limit = req.query.limit || 10;
+productsRouter.get("/", async (req, res) => {
+    const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
-    const category = req.query.category;
-    const price = parseInt(req.query.price) || null;
-    let status;
-
-    if (req.query.status === "true") {
-        status = true;
-    } else if (req.query.status === "false") {
-        status = false;
-    } else {
-        status = undefined;
-    }
+    const sort = req.query.sort === 'asc' ? 1 : req.query.sort === 'desc' ? -1 : null;
+    const query = req.query.query || {};
+    
     try {
-        const products = await productsmanager.getPaginatedProducts(page, limit, category, price, status);
-        
-        res.json(result)
+        const options = {
+            page,
+            limit,
+            sort: sort ? { price: sort } : null,
+            lean: true
+        };
 
+        const products = await Products.paginate(query, options);
+
+        const response = {
+            status: 'success',
+            payload: products.docs,
+            totalPages: products.totalPages,
+            prevPage: products.prevPage,
+            nextPage: products.nextPage,
+            page: products.page,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            prevLink: products.hasPrevPage ? `/api/products?page=${products.prevPage}&limit=${limit}` : null,
+            nextLink: products.hasNextPage ? `/api/products?page=${products.nextPage}&limit=${limit}` : null
+        };
+
+        res.json(response);
     } catch (error) {
-        res.json({message: error.message})
+        res.status(400).json({ status: 'error', message: error.message });
     }
-})
+});
+
 
 productsRouter.get("/:id", async (req, res)=>{
     const {id} = req.params;
