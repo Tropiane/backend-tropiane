@@ -75,4 +75,15 @@ viewsRouter.get("/cart/:cartId", async (req, res)=>{
     }
 })
 
+viewsRouter.get("/cookies", async (req, res)=>{
+    res.render("cookies", {
+
+    })
+})
+
+viewsRouter.get("/login", async (req, res)=>{
+    res.render("login", {
+    })
+})
+
 export default viewsRouter

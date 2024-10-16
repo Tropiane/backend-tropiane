@@ -1,19 +1,22 @@
 import express from "express";
 import handlebars from 'express-handlebars';
 import mongoose from "mongoose";
+import session from "express-session";
 
+import config from "./config.js";
 import __dirname from "./utils.js";
 
 import productsRouter from "./routes/products.router.js";
 import cartRouter from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
+import userRouter from "./routes/user.router.js";
+import cookiesRouter from "./routes/cookies.router.js";
+import cookeParser from "cookie-parser";
 
 import receptorMiddleware from "./middlewares/receptor.js";
 
 const app = express();
-
-const PORT = process.env.PORT || 8080;
-const server = app.listen(PORT, ()=>console.log(`Listen on port ${PORT}`));
+const server = app.listen(config.PORT, ()=>console.log(`Listen on port ${config.PORT}`));
 
 
 app.use(express.static(`${__dirname}/public`));
@@ -22,15 +25,20 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(receptorMiddleware);
 
+app.use(cookeParser(config.SECRET));
+app.use(session({secret: config.SECRET, resave: true, saveUninitialized: true}));
+
 app.engine("handlebars", handlebars.engine({
     extname: ".handlebars",
     runtimeOptions: {allowProtoPropertiesByDefault: true}
 }));
+
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
-
 app.use("/api/products", productsRouter);
 app.use("/api/cart", cartRouter);
 app.use("/", viewsRouter);
+app.use("/api/users", userRouter)
+app.use("/api/cookies", cookiesRouter);
 
-mongoose.connect('mongodb+srv://fedetrop23:coder@codercluster.8ewf4.mongodb.net/?retryWrites=true&w=majority&appName=CoderCluster');
+mongoose.connect(config.MONGODB_URI);
