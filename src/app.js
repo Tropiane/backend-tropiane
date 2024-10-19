@@ -2,6 +2,8 @@ import express from "express";
 import handlebars from 'express-handlebars';
 import mongoose from "mongoose";
 import session from "express-session";
+import MongoStore from "connect-mongo";
+import cookeParser from "cookie-parser";
 
 import config from "./config.js";
 import __dirname from "./utils.js";
@@ -11,7 +13,6 @@ import cartRouter from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
 import userRouter from "./routes/user.router.js";
 import cookiesRouter from "./routes/cookies.router.js";
-import cookeParser from "cookie-parser";
 
 import receptorMiddleware from "./middlewares/receptor.js";
 
@@ -26,7 +27,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(receptorMiddleware);
 
 app.use(cookeParser(config.SECRET));
-app.use(session({secret: config.SECRET, resave: true, saveUninitialized: true}));
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: config.MONGODB_URI,
+        ttl: 10,
+        mongoOptions: {}
+    }),
+    secret: config.SECRET, 
+    resave: true, 
+    saveUninitialized: true}));
 
 app.engine("handlebars", handlebars.engine({
     extname: ".handlebars",

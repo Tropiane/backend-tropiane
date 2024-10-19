@@ -83,6 +83,13 @@ viewsRouter.get("/cookies", async (req, res)=>{
 
 viewsRouter.get("/login", async (req, res)=>{
     res.render("login", {
+        css: "login.css"
+    })
+})
+
+viewsRouter.get("/register", async (req, res)=>{
+    res.render("register", {
+        css: "register.css"
     })
 })
 

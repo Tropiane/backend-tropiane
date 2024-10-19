@@ -1,3 +1,4 @@
+import { json } from "express";
 import UserModel from "../models/user.model.js";
 
 class userManager {
@@ -21,12 +22,14 @@ class userManager {
         }
     }
 
-    async create(user){
+    async create(user) {
         try {
             return await UserModel.create(user);
         } catch (error) {
-            console.log(error);
-            
+            if (error.code === 11000) { 
+                throw new Error("Email already exists");
+            }
+            throw error;
         }
     }
 
@@ -49,6 +52,24 @@ class userManager {
         } catch (error) {
             console.log(error);
             
+        }
+    }
+
+    async authenticate(username, password){
+        try {
+            const filter = {email: username, password: password};
+            return await UserModel.findOne(filter);
+        } catch (error) {
+            json.status(400).json({message: error.message});
+        }
+    }
+
+    async validateMail(email){
+        try {
+            const filter = {email: email};
+            return await UserModel.findOne(filter);
+        } catch (error) {
+            json.status(400).json({message: error.message});
         }
     }
 }

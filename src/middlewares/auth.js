@@ -1,9 +1,9 @@
 const auth = (req, res, next) => {
-    if (req.session?.userData && req.session?.userData?.admin) {
-        console.log(req.session.userData);
+    if (req.session?.userData && req.session?.userData) {
+        console.log("User authenticated: " + req.session.userData.email);
         next();
     } else {
-        res.status(401).json({ message: "Unauthorized" });
+        console.log("User not authenticated");
         res.redirect("/login");
     }
 };

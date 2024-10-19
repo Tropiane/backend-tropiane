@@ -1,6 +1,7 @@
 import { Router } from "express";
 import usersManager from "../managers/userManager.js";
 import auth from "../middlewares/auth.js";
+import validateRegister from "../middlewares/register.js";
 
 const userRouter = Router();
 
@@ -17,8 +18,8 @@ userRouter.get("/", async (req, res) => {
 });
 
 userRouter.post("/", async (req, res) => {
-    const {name, age, email} = req.body;
-    const user = {name, age, email};
+    const {name, age, email, password} = req.body;
+    const user = {name, age, email, password};
      try {
         const result = await usersManager.create(user);
         res.send({
@@ -74,15 +75,29 @@ userRouter.get("/logout", (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
     const {username, password} = req.body;
+    const user = await usersManager.authenticate(username, password);
 
     try {
-        if (username === "admin" && password === "fede123") {
-            req.session.userData = {username: username, admin: true};
+        if(!user){
+            res.status(400).json({message: "Invalid credentials"});
+        }else{
+            req.session.userData = user;
             res.redirect("/api/users/private");
-        } else {
-            res.status(401).json({message: "Invalid credentials"});
         }
     } catch (error) {
+        
+    }
+})
+
+userRouter.post("/register", validateRegister, async (req, res) => {
+    const {name, age, email, password} = req.body;
+    const user = {name, age, email, password};
+
+    try {
+        usersManager.create(user);
+        res.status(200).json({message: "User created with email: " + user.email});
+    } catch (error) {
+        console.log(error);
         
     }
 })
