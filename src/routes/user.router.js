@@ -67,8 +67,9 @@ userRouter.get("/logout", (req, res) => {
     req.session.destroy(err => {
         if (err) {
             returnres.status(400).json({message: "Logout error"});
-        } else {
-            res.status(200).json({message: "Logout successful"});
+        }else{
+
+            res.redirect("/login");
         }
     });
 })
@@ -82,10 +83,14 @@ userRouter.post("/login", async (req, res) => {
             res.status(400).json({message: "Invalid credentials"});
         }else{
             req.session.userData = user;
-            res.redirect("/api/users/private");
+            req.session.save(err => {
+                if (err) return res.status(500).json({message: "Session save error"});
+
+                res.redirect("/profile");
+            });
         }
     } catch (error) {
-        
+        json.status(400).json({message: error.message});
     }
 })
 

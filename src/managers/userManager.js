@@ -35,7 +35,7 @@ class userManager {
 
     async delete(id){
         try {
-            return await UserModel.findByIdAndDelete(id);
+            return await UserModel.findByIdAndDelete(id).lean();
         } catch (error) {
             console.log(error);
             
@@ -58,7 +58,12 @@ class userManager {
     async authenticate(username, password){
         try {
             const filter = {email: username, password: password};
-            return await UserModel.findOne(filter);
+            const findUser = await UserModel.findOne(filter).lean();
+            
+            if(findUser){
+                const {password, ...result} = findUser;
+                return result;
+            }
         } catch (error) {
             json.status(400).json({message: error.message});
         }
@@ -67,7 +72,7 @@ class userManager {
     async validateMail(email){
         try {
             const filter = {email: email};
-            return await UserModel.findOne(filter);
+            return await UserModel.findOne(filter).lean();
         } catch (error) {
             json.status(400).json({message: error.message});
         }

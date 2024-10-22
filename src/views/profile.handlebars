@@ -1,0 +1,10 @@
+<div>
+    <h1>Profile</h1>
+    {{log data}}
+    <p>Username: {{data.name}}</p>
+    <p>Email: {{data.email}}</p>
+
+    <form action="/api/users/logout" method="GET">
+    <button type="submit">Logout</button>
+    </form>
+</div>

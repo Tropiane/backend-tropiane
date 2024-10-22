@@ -30,7 +30,7 @@ app.use(cookeParser(config.SECRET));
 app.use(session({
     store: MongoStore.create({
         mongoUrl: config.MONGODB_URI,
-        ttl: 10,
+        ttl: 600,
         mongoOptions: {}
     }),
     secret: config.SECRET, 
