@@ -94,8 +94,7 @@ viewsRouter.get("/register", async (req, res)=>{
 })
 
 viewsRouter.get("/profile", async (req, res)=>{
-    const data = req.session.userData;
-    console.log(req.session);
+    const data = req.session;
     
     res.render("profile", {
         data

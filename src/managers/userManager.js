@@ -1,5 +1,6 @@
 import { json } from "express";
 import UserModel from "../models/user.model.js";
+import { createHash, isValidHash } from "../utils.js";
 
 class userManager {
     constructor(){}
@@ -7,6 +8,15 @@ class userManager {
     async getAll(){
         try {
             return await UserModel.find().lean();
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async getOne(filter){
+        try {
+            return UserModel.findOne(filter).lean();
         } catch (error) {
             console.log(error);
             
@@ -24,6 +34,8 @@ class userManager {
 
     async create(user) {
         try {
+            user.password = createHash(user.password);
+
             return await UserModel.create(user);
         } catch (error) {
             if (error.code === 11000) { 
@@ -57,10 +69,10 @@ class userManager {
 
     async authenticate(username, password){
         try {
-            const filter = {email: username, password: password};
+            const filter = {email: username};
             const findUser = await UserModel.findOne(filter).lean();
-            
-            if(findUser){
+
+            if(findUser && isValidHash(password, findUser.password)){
                 const {password, ...result} = findUser;
                 return result;
             }
@@ -69,6 +81,7 @@ class userManager {
         }
     }
 
+    //use on middleware Register
     async validateMail(email){
         try {
             const filter = {email: email};

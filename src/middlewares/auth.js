@@ -1,5 +1,8 @@
+import initAuthStrategies from "../auth/passport.config.js";
+initAuthStrategies();
+
 const auth = (req, res, next) => {
-    if (req.session?.userData && req.session?.userData) {
+    if (req.session?.passport) {
         console.log("User authenticated: " + req.session.userData.email);
         next();
     } else {

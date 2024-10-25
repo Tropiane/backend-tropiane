@@ -31,7 +31,9 @@ body{
     color: white;
     font-size: 20px;
 }
-
+.loginContainer form input::placeholder{
+    color: white;
+}
 .loginContainer form button{
     cursor: pointer;
     background-color: transparent;

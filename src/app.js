@@ -4,6 +4,9 @@ import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cookeParser from "cookie-parser";
+import passport from "passport";
+
+import initAuthStrategies from "./auth/passport.config.js";
 
 import config from "./config.js";
 import __dirname from "./utils.js";
@@ -18,7 +21,6 @@ import receptorMiddleware from "./middlewares/receptor.js";
 
 const app = express();
 const server = app.listen(config.PORT, ()=>console.log(`Listen on port ${config.PORT}`));
-
 
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
@@ -36,6 +38,9 @@ app.use(session({
     secret: config.SECRET, 
     resave: true, 
     saveUninitialized: true}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.engine("handlebars", handlebars.engine({
     extname: ".handlebars",
