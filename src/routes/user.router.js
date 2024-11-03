@@ -1,12 +1,14 @@
 import { Router } from "express";
 import passport from "passport";
 
+import { createToken, verifyToken } from "../utils.js";
 import usersManager from "../managers/userManager.js";
-import auth from "../middlewares/auth.js";
 import validateRegister from "../middlewares/register.js";
 import initAuthStrategies from "../auth/passport.config.js";
 
+
 const userRouter = Router();
+initAuthStrategies();
 
 userRouter.get("/", async (req, res) => {
     try {
@@ -20,7 +22,6 @@ userRouter.get("/", async (req, res) => {
     }
 });
 
-initAuthStrategies();
 
 userRouter.post("/", async (req, res) => {
     const {name, age, email, password} = req.body;
@@ -79,40 +80,9 @@ userRouter.get("/logout", (req, res) => {
     });
 })
 
-// userRouter.post("/login", async (req, res) => {
-//     const {username, password} = req.body;
-//     const user = await usersManager.authenticate(username, password);
-    
-    
-//     try {
-//         if(!user){
-//             res.status(400).json({message: "Invalid credentials"});
-//         }else{
-//             req.session.userData = user;
-
-//             req.session.save(err => {
-//                 if (err) return res.status(500).json({message: "Session save error"});
-                
-//                 res.redirect("/profile");
-//             });
-//         }
-//     } catch (error) {
-//         json.status(400).json({message: error.message});
-//     }
-// })
-
-userRouter.post("/login", passport.authenticate("login", {failureRedirect: "/login"}), (req, res) => {
-    req.session.save((err) => {
-        if (err) {
-            return res.status(500).json({message: "Session save error"});
-        }
-        res.redirect("/profile");
-    })
-})
-
 userRouter.post("/register", validateRegister, async (req, res) => {
-    const {name, age, email, password} = req.body;
-    const user = {name, age, email, password};
+    const {firstName, lastName, email, password} = req.body;
+    const user = {firstName, lastName, email, password};
 
     try {
         if(user.name === "" || user.age === "" || user.email === "" || user.password === "") {
@@ -127,5 +97,49 @@ userRouter.post("/register", validateRegister, async (req, res) => {
         
     }
 })
+
+userRouter.post("/login", passport.authenticate("login", {failureRedirect: "/login"}) ,(req, res) => {
+    req.session.save((err) => {
+        if (err) {
+            return res.status(500).json({ message: "Session save error" });
+        }
+        res.redirect("/profile");
+    })
+})
+
+userRouter.get("/ghlogin", passport.authenticate("ghlogin", {scope: ["user:email"]}), (req, res) => {})
+
+userRouter.get("/ghcallback", 
+    passport.authenticate("ghlogin", { failureRedirect: "/login", failureMessage: "GitHub login failed" }), 
+    (req, res) => {
+        req.session.save((err) => {
+            if (err) {
+                return res.status(500).json({ message: "Session save error" });
+            }
+            res.redirect("/profile");
+        });
+    }
+);
+
+userRouter.post('/jwtlogin', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (username != '' && password != '') {
+        const process = await usersManager.authenticate(username, password);
+        if (process) {
+            const payload = { username: username, admin: true };
+            const token = createToken(payload, '1h');
+            res.status(200).send({ error: null, data: [token] });
+        } else {
+            res.status(401).send({ error: 'Usuario o clave no válidos', data: [token] });
+        }
+    } else {
+        res.status(400).send({ error: 'Faltan campos: obligatorios username, password', data: [] });
+    }
+});
+
+userRouter.get('/profile', verifyToken, (req, res) => {
+    res.status(200).send({ error: null, data: req.user });
+});
 
 export default userRouter

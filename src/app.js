@@ -5,8 +5,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import cookeParser from "cookie-parser";
 import passport from "passport";
-
-import initAuthStrategies from "./auth/passport.config.js";
+import cors from "cors";
 
 import config from "./config.js";
 import __dirname from "./utils.js";
@@ -28,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(receptorMiddleware);
 
+app.use(cors({origin: "*"}));
 app.use(cookeParser(config.SECRET));
 app.use(session({
     store: MongoStore.create({
