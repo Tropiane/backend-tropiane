@@ -17,7 +17,7 @@ export const createToken = (payload, duration) => jwt.sign(payload, config.SECRE
 export const verifyToken = (req, res, next) => {
 
     const headerToken = req.headers.authorization ? req.headers.authorization.split(' ')[1] : undefined;
-    const cookieToken = req.cookies && req.cookies[`${config.APP_NAME}_cookie`] ? req.cookies[`${config.APP_NAME}_cookie`] : undefined;
+    const cookieToken = req.signedCookies && req.signedCookies[`${config.APP_NAME}_cookie`] ? req.signedCookies[`${config.APP_NAME}_cookie`] : undefined;
     const queryToken = req.query.access_token ? req.query.access_token : undefined;
     const receivedToken = headerToken || cookieToken || queryToken;
 

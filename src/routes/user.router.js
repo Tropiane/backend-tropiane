@@ -5,6 +5,7 @@ import { createToken, verifyToken } from "../utils.js";
 import usersManager from "../managers/userManager.js";
 import validateRegister from "../middlewares/register.js";
 import initAuthStrategies from "../auth/passport.config.js";
+import config from "../config.js";
 
 
 const userRouter = Router();
@@ -127,8 +128,16 @@ userRouter.post('/jwtlogin', async (req, res) => {
     if (username != '' && password != '') {
         const process = await usersManager.authenticate(username, password);
         if (process) {
-            const payload = { username: username, admin: true };
+            const payload = { email: username, admin: true };
             const token = createToken(payload, '1h');
+            
+             res.cookie(`${config.APP_NAME}_cookie`, token, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 3600000,
+                signed: true
+            });
+
             res.status(200).send({ error: null, data: [token] });
         } else {
             res.status(401).send({ error: 'Usuario o clave no válidos', data: [token] });
@@ -138,7 +147,7 @@ userRouter.post('/jwtlogin', async (req, res) => {
     }
 });
 
-userRouter.get('/profile', verifyToken, (req, res) => {
+userRouter.get('/profile', passport.authenticate('jwtlogin', { session: false }), (req, res) => {
     res.status(200).send({ error: null, data: req.user });
 });
 

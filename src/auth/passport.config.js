@@ -3,8 +3,18 @@ import config from "../config.js";
 import local from "passport-local";
 import usersManager from "../managers/userManager.js";
 import GitHubStrategy from "passport-github2";
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import jwt from "jsonwebtoken";
 
 const localStrategy = local.Strategy;
+
+const options = {
+    jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        (req) => req.signedCookies[`${config.APP_NAME}_cookie`]
+    ]),
+    secretOrKey: config.SECRET,
+};
 
 const initAuthStrategies = () => {
     passport.use("login", new localStrategy(
@@ -55,6 +65,20 @@ const initAuthStrategies = () => {
             }
         } catch (error) {
             console.log(error);
+            return done(error);
+        }
+    }));
+
+    passport.use("jwtlogin", new JwtStrategy(options, async (payload, done) => {
+        try {
+           const user = await usersManager.getOne({ email: payload.email });
+           if (!user) {
+               return done(null, false);
+            } else{
+                  return done(null, {email: user.email, admin: user.admin});
+           }
+        } catch (error) {
+            
             return done(error);
         }
     }));
