@@ -58,13 +58,10 @@ const initAuthStrategies = () => {
                 }
                 
                 return done(null, findUser);
-            } else {
-                
-                
+            } else {                
                 return done("GitHub email not found", false);
             }
         } catch (error) {
-            console.log(error);
             return done(error);
         }
     }));
@@ -75,7 +72,21 @@ const initAuthStrategies = () => {
            if (!user) {
                return done(null, false);
             } else{
-                  return done(null, {email: user.email, admin: user.admin});
+                return done(null, {email: user.email, admin: user.admin});
+           }
+        } catch (error) {
+            
+            return done(error);
+        }
+    }));
+
+    passport.use("current", new JwtStrategy(options, async (payload, done) => {
+        try {
+           const user = await usersManager.getOne({ email: payload.email });
+           if (!user) {
+               return done(null, false);
+            } else{
+                return done(null, {email: user.email, admin: user.admin});
            }
         } catch (error) {
             

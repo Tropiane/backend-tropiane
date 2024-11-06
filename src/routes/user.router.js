@@ -6,6 +6,7 @@ import usersManager from "../managers/userManager.js";
 import validateRegister from "../middlewares/register.js";
 import initAuthStrategies from "../auth/passport.config.js";
 import config from "../config.js";
+import cartsManager from "../managers/cartsManager.js";
 
 
 const userRouter = Router();
@@ -22,7 +23,6 @@ userRouter.get("/", async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
-
 
 userRouter.post("/", async (req, res) => {
     const {name, age, email, password} = req.body;
@@ -83,7 +83,8 @@ userRouter.get("/logout", (req, res) => {
 
 userRouter.post("/register", validateRegister, async (req, res) => {
     const {firstName, lastName, email, password} = req.body;
-    const user = {firstName, lastName, email, password};
+    const cart = await cartsManager.createCart();
+    const user = {firstName, lastName, email, password, cart};
 
     try {
         if(user.name === "" || user.age === "" || user.email === "" || user.password === "") {
@@ -127,6 +128,7 @@ userRouter.post('/jwtlogin', async (req, res) => {
 
     if (username != '' && password != '') {
         const process = await usersManager.authenticate(username, password);
+        
         if (process) {
             const payload = { email: username, admin: true };
             const token = createToken(payload, '1h');

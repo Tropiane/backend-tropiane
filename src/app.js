@@ -15,6 +15,7 @@ import cartRouter from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
 import userRouter from "./routes/user.router.js";
 import cookiesRouter from "./routes/cookies.router.js";
+import sessionsRouter from "./routes/sessions.router.js";
 
 import receptorMiddleware from "./middlewares/receptor.js";
 
@@ -54,5 +55,6 @@ app.use("/api/cart", cartRouter);
 app.use("/", viewsRouter);
 app.use("/api/users", userRouter)
 app.use("/api/cookies", cookiesRouter);
+app.use("/api/sessions", sessionsRouter)
 
 mongoose.connect(config.MONGODB_URI);

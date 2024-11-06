@@ -1,6 +1,8 @@
 import { json, Router } from "express";
 import productsmanager from "../managers/productsManager.js";
 import cartsManager from "../managers/cartsManager.js";
+import usersManager from "../managers/userManager.js";
+import passport from "passport";
 
 const viewsRouter = Router();
 
@@ -31,8 +33,7 @@ viewsRouter.get("/products", async(req, res)=>{
         console.log('error al obtener los productos  ',error);
         res.status(500).send("Error al obtener los productos");
     }
-})
-
+});
 
 viewsRouter.get("/createProducts", async (req, res)=>{
     try {
@@ -42,7 +43,7 @@ viewsRouter.get("/createProducts", async (req, res)=>{
     } catch (error) {
         return json({message: error.message})
     }
-})
+});
 
 viewsRouter.get("/details/:pid", async (req, res)=>{
     try {
@@ -56,10 +57,12 @@ viewsRouter.get("/details/:pid", async (req, res)=>{
     } catch (error) {
       console.log(error); 
     }
-    
-})
+});
 
 viewsRouter.get("/cart/:cartId", async (req, res)=>{
+    const data = req.user;
+    const user = await usersManager.getOne({email:data.email});
+    const findCart = user.cart;
     try {
         const {cartId} = req.params;
         const cart = await cartsManager.getCart(cartId);
@@ -67,38 +70,40 @@ viewsRouter.get("/cart/:cartId", async (req, res)=>{
 
         res.render("cart",{
             css: "cart.css",
+            findCart,
             cart,
             sumTotal
         })
     } catch (error) {
       console.log(error); 
     }
-})
+});
 
 viewsRouter.get("/cookies", async (req, res)=>{
     res.render("cookies", {
 
     })
-})
+});
 
 viewsRouter.get("/login", async (req, res)=>{
     res.render("login", {
         css: "login.css"
     })
-})
+});
 
 viewsRouter.get("/register", async (req, res)=>{
     res.render("register", {
         css: "register.css"
     })
-})
+});
 
-viewsRouter.get("/profile", async (req, res)=>{
-    const data = req.session;
+viewsRouter.get("/profile", passport.authenticate('jwtlogin', { session: false }) ,async (req, res)=>{
+    const data = req.user;
+    const user = await usersManager.getOne({email: data.email});
     
     res.render("profile", {
         data
     })
-})
+});
 
 export default viewsRouter

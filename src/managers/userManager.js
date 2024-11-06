@@ -16,7 +16,12 @@ class userManager {
 
     async getOne(filter){
         try {
-            return UserModel.findOne(filter).lean();
+            const findUser = await UserModel.findOne(filter).lean();
+
+            if (!findUser) { return "user not found" }
+
+            const {password, ...result} = findUser;
+            return result;
         } catch (error) {
             console.log(error);
             
