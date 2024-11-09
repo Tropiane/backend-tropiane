@@ -4,7 +4,6 @@ import local from "passport-local";
 import usersManager from "../managers/userManager.js";
 import GitHubStrategy from "passport-github2";
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import jwt from "jsonwebtoken";
 
 const localStrategy = local.Strategy;
 

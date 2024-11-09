@@ -3,6 +3,7 @@ import productsmanager from "../managers/productsManager.js";
 import cartsManager from "../managers/cartsManager.js";
 import usersManager from "../managers/userManager.js";
 import passport from "passport";
+import config from "../config.js";
 
 const viewsRouter = Router();
 
@@ -79,14 +80,8 @@ viewsRouter.get("/cart/:cartId", async (req, res)=>{
     }
 });
 
-viewsRouter.get("/cookies", async (req, res)=>{
-    res.render("cookies", {
-
-    })
-});
-
 viewsRouter.get("/login", async (req, res)=>{
-    res.render("login", {
+    req.signedCookies[`${config.APP_NAME}_cookie`] ? res.redirect("/products") : res.render("login", {
         css: "login.css"
     })
 });
@@ -99,10 +94,15 @@ viewsRouter.get("/register", async (req, res)=>{
 
 viewsRouter.get("/profile", passport.authenticate('jwtlogin', { session: false }) ,async (req, res)=>{
     const data = req.user;
-    const user = await usersManager.getOne({email: data.email});
     
     res.render("profile", {
         data
+    })
+});
+
+viewsRouter.get("/cookies", async (req, res)=>{
+    res.render("cookies", {
+
     })
 });
 

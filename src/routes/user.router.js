@@ -8,9 +8,18 @@ import initAuthStrategies from "../auth/passport.config.js";
 import config from "../config.js";
 import cartsManager from "../managers/cartsManager.js";
 
-
 const userRouter = Router();
 initAuthStrategies();
+
+userRouter.param("uid", async (req, res, next, uid) => {
+    try {
+        const user = await usersManager.getById(uid);
+        req.user = user;
+        next();
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
 
 userRouter.get("/", async (req, res) => {
     try {
@@ -140,9 +149,9 @@ userRouter.post('/jwtlogin', async (req, res) => {
                 signed: true
             });
 
-            res.status(200).send({ error: null, data: [token] });
+            res.redirect("/profile");
         } else {
-            res.status(401).send({ error: 'Usuario o clave no válidos', data: [token] });
+            res.redirect("/login");
         }
     } else {
         res.status(400).send({ error: 'Faltan campos: obligatorios username, password', data: [] });
