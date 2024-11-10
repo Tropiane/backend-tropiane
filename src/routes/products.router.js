@@ -81,4 +81,8 @@ productsRouter.delete("/:pid", async (req, res)=>{
     res.send(`Product ${pid} deleted`);
 })
 
+productsRouter.all("*", (req, res) => {
+    res.status(404).send({ error: "Endpoint not found" });
+});
+
 export default productsRouter;

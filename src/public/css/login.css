@@ -49,12 +49,48 @@ body{
     transform: scale(0.9);
     color: white;
 }
+
+.loginContainer h1{
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+}
+
+.loginContainer h2 a{
+    border-bottom: 2px solid black;
+}
+
+#ghLogin{
+    cursor: pointer;
+    background-image: linear-gradient(to right, #aaa5a5, #404c66c9, #373a3acb);
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    color: black;
+    font-size: 20px;
+}
+
+#ghLogin:active{
+    transition: .1s;
+    transform: scale(0.9);
+    color: white;
+}
+
+.alertError{
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px;
+    background-color: beige;
+    border-radius: 5px;
+}
+
 @keyframes view{
     0%{
         opacity: 0;
     }
     100%{
-        transition: .3s;
+        transition: 1s;
         opacity: 1;
     }
     

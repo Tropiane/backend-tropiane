@@ -5,6 +5,7 @@ const cartsRouter = Router();
 
 cartsRouter.get('/:cid', async (req, res) => {
     const { cid } = req.params;
+
     try {
         const cart = await cartsManager.getCart(cid);
         res.send(cart);

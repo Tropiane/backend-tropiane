@@ -11,12 +11,17 @@ sessionsRouter.get("/current", passport.authenticate("current", { session: false
     try {
         res.send({
             status: "success",
-            payload: user
+            userData: user,
+            tokenData: data
         })
     } catch (error) {
         console.log(error);
         
     }
+});
+
+sessionsRouter.all("*", (req, res) => {
+    res.status(404).send({ error: "Endpoint not found" });
 });
 
 export default sessionsRouter;

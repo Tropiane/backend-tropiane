@@ -4,8 +4,11 @@ import cartsManager from "../managers/cartsManager.js";
 import usersManager from "../managers/userManager.js";
 import passport from "passport";
 import config from "../config.js";
+import httpServer from "../app.js";
+import { verifyToken } from "../utils.js";
 
 const viewsRouter = Router();
+let errorLogin= ''
 
 viewsRouter.get("/products", async(req, res)=>{
 
@@ -36,7 +39,7 @@ viewsRouter.get("/products", async(req, res)=>{
     }
 });
 
-viewsRouter.get("/createProducts", async (req, res)=>{
+viewsRouter.get("/createproducts", async (req, res)=>{
     try {
         res.render("createProducts", {
             css: "createProducts.css"
@@ -60,14 +63,13 @@ viewsRouter.get("/details/:pid", async (req, res)=>{
     }
 });
 
-viewsRouter.get("/cart/:cartId", async (req, res)=>{
+viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
     const data = req.user;
     const user = await usersManager.getOne({email:data.email});
     const findCart = user.cart;
     try {
-        const {cartId} = req.params;
-        const cart = await cartsManager.getCart(cartId);
-        const sumTotal = await cartsManager.getTotal(cartId);
+        const cart = await cartsManager.getCart(findCart);
+        const sumTotal = await cartsManager.getTotal(findCart);
 
         res.render("cart",{
             css: "cart.css",
@@ -81,9 +83,22 @@ viewsRouter.get("/cart/:cartId", async (req, res)=>{
 });
 
 viewsRouter.get("/login", async (req, res)=>{
-    req.signedCookies[`${config.APP_NAME}_cookie`] ? res.redirect("/products") : res.render("login", {
-        css: "login.css"
+    httpServer.on('errorLogin', (error) => {
+        errorLogin = error
+        setTimeout(() => {
+            errorLogin = ''
+        }, 3000);      
     })
+
+    
+    if(!req.signedCookies[`${config.APP_NAME}_cookie`]){
+        res.render("login", {
+            css: "login.css",
+            data: errorLogin
+        })
+    }else{
+        res.redirect("/profile");
+    }
 });
 
 viewsRouter.get("/register", async (req, res)=>{
@@ -92,18 +107,13 @@ viewsRouter.get("/register", async (req, res)=>{
     })
 });
 
-viewsRouter.get("/profile", passport.authenticate('jwtlogin', { session: false }) ,async (req, res)=>{
-    const data = req.user;
+viewsRouter.get("/profile", verifyToken ,async (req, res)=>{
+    const data = await usersManager.getOne({email: req.user.email});
     
     res.render("profile", {
         data
     })
 });
 
-viewsRouter.get("/cookies", async (req, res)=>{
-    res.render("cookies", {
-
-    })
-});
 
 export default viewsRouter

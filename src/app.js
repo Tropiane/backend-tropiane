@@ -72,12 +72,10 @@ const httpServer = app.listen(config.PORT, async() => {
         socket.emit('welcome', `Bienvenido cliente, estás conectado con el id ${socket.id}`);
 
     });
-    httpServer.on("rejectLogin", data => {
-        httpServer.emit("errorLogin", data);
-    })
-
+    httpServer.on('errorLogin', (error) => {
+        socketServer.emit('errorLogin', error);
+    });
 });
-
 
 export default httpServer;
 mongoose.connect(config.MONGODB_URI);

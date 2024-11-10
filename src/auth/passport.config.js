@@ -4,6 +4,7 @@ import local from "passport-local";
 import usersManager from "../managers/userManager.js";
 import GitHubStrategy from "passport-github2";
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { createToken } from "../utils.js";
 
 const localStrategy = local.Strategy;
 
@@ -35,35 +36,38 @@ const initAuthStrategies = () => {
                 }
         }));
 
-    passport.use("ghlogin", new GitHubStrategy({
-        clientID: config.GITHUB_CLIENT_ID,
-        clientSecret: config.GITHUB_CLIENT_SECRET,
-        callbackURL: config.GIT_HUB_CALLBACK_URL
-    }, async (accessToken, refreshToken, profile, done) => {
-        try {
-            const email = profile._json?.email || null;
+        passport.use("ghlogin", new GitHubStrategy({
+            clientID: config.GITHUB_CLIENT_ID,
+            clientSecret: config.GITHUB_CLIENT_SECRET,
+            callbackURL: config.GIT_HUB_CALLBACK_URL
+        }, async (accessToken, refreshToken, profile, done) => {
+            try {
+                const email = profile._json?.email || null;
+        
+                if (email) {
+                    let findUser = await usersManager.getOne({ email });
     
-            if (email) {
-                let findUser = await usersManager.getOne({ email });
+                    if (!findUser) {
+                        const user = {
+                            name: profile._json.name.split(" ")[0],
+                            age: 0,
+                            email: email,
+                            password: "none"
+                        };
+                        findUser = await usersManager.create(user);
+                    }
 
-                if (!findUser) {
-                    const user = {
-                        name: profile._json.name.split(" ")[0],
-                        age: 0,
-                        email: email,
-                        password: "none"
-                    };
-                    findUser = await usersManager.create(user);
+                    const payload = {email:findUser.email, id:findUser._id};
+                    const token = createToken(payload, '1h');
+                    
+                    return done(null, findUser, token);
+                } else {                
+                    return done("GitHub email not found", false);
                 }
-                
-                return done(null, findUser);
-            } else {                
-                return done("GitHub email not found", false);
+            } catch (error) {
+                return done(error);
             }
-        } catch (error) {
-            return done(error);
-        }
-    }));
+        }));
 
     passport.use("jwtlogin", new JwtStrategy(options, async (payload, done) => {
         try {

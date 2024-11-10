@@ -30,7 +30,7 @@ class userManager {
 
     async getById(id){
         try {
-            return await UserModel.findById(id).lean();
+            return await UserModel.findById(id);
         } catch (error) {
             console.log(error);
             
@@ -74,8 +74,7 @@ class userManager {
 
     async authenticate(username, password){
         try {
-            const filter = {email: username};
-            const findUser = await UserModel.findOne(filter).lean();
+            const findUser = await UserModel.findOne({email: username}).lean();
 
             if(findUser && isValidHash(password, findUser.password)){
                 const {password, ...result} = findUser;
@@ -89,8 +88,7 @@ class userManager {
     //use on middleware Register
     async validateMail(email){
         try {
-            const filter = {email: email};
-            return await UserModel.findOne(filter).lean();
+            return await UserModel.findOne({email: email}).lean();
         } catch (error) {
             json.status(400).json({message: error.message});
         }
