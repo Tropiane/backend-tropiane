@@ -1,0 +1,16 @@
+
+<div class="loginContainer"><h1>Login</h1>
+    {{#if data}}
+        <p class="alertError">{{data}}</p>
+    {{/if}}
+    <form action="/api/users/jwtlogin" method="POST">
+    <input type="text" name="username" placeholder="username" id="username">
+    <br/>
+    <input type="password" name="password" placeholder="password" id="password">
+    <br/>
+    <button class="btnLogin">Ingresar</button>
+    <br/>
+    </form>
+    <button class="btnLogin" id="ghLogin" onclick="window.location.replace('/api/users/ghlogin')">Github</button>
+    <h2>No tienes cuenta? <a href="/register">Registrate</a></h2>
+</div>

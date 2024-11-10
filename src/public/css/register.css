@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+.registerContainer{
+    background-image: linear-gradient(to right, #21a5f2ec, #56b8f1fb, #23758af1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.registerContainer form{
+    background-color: rgba(255, 255, 255, 0.397);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+.registerContainer form input{
+    max-width: 300px;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
+.registerContainer form input::placeholder{
+    color: black;
+}
+.registerContainer form button{
+    max-width: 300px;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}

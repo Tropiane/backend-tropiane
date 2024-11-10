@@ -1,0 +1,97 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.loginContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: linear-gradient(to right, #f27121ec, #e94057ea, #8a2387e7);
+    animation-name: view;
+}
+
+.loginContainer form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.loginContainer form input{
+    max-width: 300px;
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+}
+.loginContainer form input::placeholder{
+    color: white;
+}
+.loginContainer form button{
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    color: black;
+    font-size: 20px;
+    transition: .1s;
+}
+.loginContainer form button:active{
+    transition: .1s;
+    transform: scale(0.9);
+    color: white;
+}
+
+.loginContainer h1{
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+}
+
+.loginContainer h2 a{
+    border-bottom: 2px solid black;
+}
+
+#ghLogin{
+    cursor: pointer;
+    background-image: linear-gradient(to right, #aaa5a5, #404c66c9, #373a3acb);
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    color: black;
+    font-size: 20px;
+}
+
+#ghLogin:active{
+    transition: .1s;
+    transform: scale(0.9);
+    color: white;
+}
+
+.alertError{
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px;
+    background-color: beige;
+    border-radius: 5px;
+}
+
+@keyframes view{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        transition: 1s;
+        opacity: 1;
+    }
+    
+}

@@ -4,14 +4,7 @@ const filters = document.querySelector(".productFilters");
 const categories = document.querySelectorAll(".category");
 const stock = document.querySelectorAll(".stock");
 const cart = localStorage.getItem("cartID");
-const cartId = document.querySelector("#cart");
-
-async function createCart() {
-  const response = await fetch("/api/cart", {method: "POST"});
-  const cartId = await response.json();
-  
-  localStorage.setItem("cartID", cartId);
-}
+const cartId = document.querySelector(".cart");
 
 function updateURLParameter(param, value) {
   const currentUrl = new URL(window.location.href);
@@ -20,12 +13,6 @@ function updateURLParameter(param, value) {
   
   window.location.href = currentUrl.href;
 }
-
-document.addEventListener("DOMContentLoaded", async () => {
-  if (!cart) {
-    await createCart();
-  }
-});
 
 productsContainer.addEventListener("click", async (e) => {
   e.target.classList.contains("details") &&(window.location.href = `/details/${e.target.id}`)
@@ -79,5 +66,6 @@ filters.addEventListener("change", (e) => {
 
 cartId.addEventListener("click", async (e) => {
   e.preventDefault();
+  
   window.location.href = `/cart/${cart}`;
 })

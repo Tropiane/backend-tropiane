@@ -1,5 +1,16 @@
 const cartProduct = document.querySelector(".cartContainer");
 const emptyCart = document.querySelector(".emptyCart");
+const cart = document.querySelector(".cart");
+
+const setCart = () => {
+     const cartId = cart.target.id;
+     console.log(cartId);
+     
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    setCart();
+})
 
 cartProduct.addEventListener("click", async (e) => {
     e.preventDefault();
