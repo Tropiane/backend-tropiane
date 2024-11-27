@@ -31,3 +31,9 @@ export const verifyToken = (req, res, next) => {
         next();
     });
 };
+
+export const handlePolicies = policies => (req, res, next) => {
+    const role = req.user.role;
+    if(!policies.includes(role)) return res.status(403).send({ error: 'Usuario no autorizado', data: [] });
+    next();
+}

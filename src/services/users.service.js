@@ -1,11 +1,13 @@
-import usersController from "../controllers/users.controller.js";
+import { json } from "express";
+import UserModel from "../models/user.model.js";
+import { createHash, isValidHash } from "../utils.js";
 
-class userManager {
+class usersServices {
     constructor(){}
     
     async getAll(){
         try {
-            return await usersController.getAll();
+            return await UserModel.find().lean();
         } catch (error) {
             console.log(error);
             
@@ -14,7 +16,12 @@ class userManager {
 
     async getOne(filter){
         try {
-            return await usersController.getOne(filter);
+            const findUser = await UserModel.findOne(filter).lean();
+
+            if (!findUser) { return "user not found" }
+
+            const {password, ...result} = findUser;
+            return result;
         } catch (error) {
             console.log(error);
             
@@ -23,7 +30,7 @@ class userManager {
 
     async getById(id){
         try {
-            return await usersController.findById(id);
+            return await UserModel.findById(id);
         } catch (error) {
             console.log(error);
             
@@ -32,7 +39,9 @@ class userManager {
 
     async create(user) {
         try {
-            return await usersController.create(user);
+            user.password = createHash(user.password);
+
+            return await UserModel.create(user);
         } catch (error) {
             if (error.code === 11000) { 
                 throw new Error("Email already exists");
@@ -43,7 +52,7 @@ class userManager {
 
     async delete(id){
         try {
-            return await usersController.delete(id);
+            return await UserModel.findByIdAndDelete(id).lean();
         } catch (error) {
             console.log(error);
             
@@ -51,8 +60,12 @@ class userManager {
     }
 
     async update(id, user){
+        const findUser = UserModel.findById(id);
+
         try {
-            return await usersController.update(id, user);
+            if (!findUser) { return "user not found" }
+
+            return await UserModel.findByIdAndUpdate(id, user);
         } catch (error) {
             console.log(error);
             
@@ -61,7 +74,12 @@ class userManager {
 
     async authenticate(username, password){
         try {
-            return await usersController.authenticate(username, password);
+            const findUser = await UserModel.findOne({email: username}).lean();
+
+            if(findUser && isValidHash(password, findUser.password)){
+                const {password, ...result} = findUser;
+                return result;
+            }
         } catch (error) {
             json.status(400).json({message: error.message});
         }
@@ -70,12 +88,11 @@ class userManager {
     //use on middleware Register
     async validateMail(email){
         try {
-            return await usersController.validateMail(email);
+            return await UserModel.findOne({email: email}).lean();
         } catch (error) {
             json.status(400).json({message: error.message});
         }
     }
 }
 
-const usersManager = new userManager();
-export default usersManager
+export default usersServices;

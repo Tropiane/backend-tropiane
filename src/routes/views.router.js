@@ -1,13 +1,15 @@
 import { json, Router } from "express";
 import productsmanager from "../managers/productsManager.js";
 import cartsManager from "../managers/cartsManager.js";
-import usersManager from "../managers/userManager.js";
+import usersController from "../controllers/users.controller.js";
 import passport from "passport";
 import config from "../config.js";
 import httpServer from "../app.js";
 import { verifyToken } from "../utils.js";
 
 const viewsRouter = Router();
+const controller = new usersController();
+
 let errorLogin= ''
 
 viewsRouter.get("/products", async(req, res)=>{
@@ -65,7 +67,7 @@ viewsRouter.get("/details/:pid", async (req, res)=>{
 
 viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
     const data = req.user;
-    const user = await usersManager.getOne({email:data.email});
+    const user = await controller.getOne({email:data.email});
     const findCart = user.cart;
     try {
         const cart = await cartsManager.getCart(findCart);
@@ -108,7 +110,7 @@ viewsRouter.get("/register", async (req, res)=>{
 });
 
 viewsRouter.get("/profile", verifyToken ,async (req, res)=>{
-    const data = await usersManager.getOne({email: req.user.email});
+    const data = await controller.getOne({email: req.user.email});
     
     res.render("profile", {
         data

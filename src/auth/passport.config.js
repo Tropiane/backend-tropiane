@@ -1,13 +1,13 @@
 import passport from "passport";
 import config from "../config.js";
 import local from "passport-local";
-import usersManager from "../managers/userManager.js";
+import usersController from "../controllers/users.controller.js";
 import GitHubStrategy from "passport-github2";
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { createToken } from "../utils.js";
 
 const localStrategy = local.Strategy;
-
+const controller = new usersController();
 const options = {
     jwtFromRequest: ExtractJwt.fromExtractors([
         ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -23,7 +23,7 @@ const initAuthStrategies = () => {
                 try {
                     if(username !== "" && password !== "") {
                         
-                        const user = await usersManager.authenticate(username, password);
+                        const user = await controller.authenticate(username, password);
                         if (!user) {
                             return done(null, false);
                         }
@@ -45,7 +45,7 @@ const initAuthStrategies = () => {
                 const email = profile._json?.email || null;
         
                 if (email) {
-                    let findUser = await usersManager.getOne({ email });
+                    let findUser = await controller.getOne({ email });
     
                     if (!findUser) {
                         const user = {
@@ -54,7 +54,7 @@ const initAuthStrategies = () => {
                             email: email,
                             password: "none"
                         };
-                        findUser = await usersManager.create(user);
+                        findUser = await controller.create(user);
                     }
 
                     const payload = {email:findUser.email, id:findUser._id};
@@ -71,7 +71,7 @@ const initAuthStrategies = () => {
 
     passport.use("jwtlogin", new JwtStrategy(options, async (payload, done) => {
         try {
-           const user = await usersManager.getOne({ email: payload.email });
+           const user = await controller.getOne({ email: payload.email });
            if (!user) {
                return done(null, false);
             } else{
@@ -85,7 +85,7 @@ const initAuthStrategies = () => {
 
     passport.use("current", new JwtStrategy(options, async (payload, done) => {
         try {
-           const user = await usersManager.getOne({ email: payload.email });
+           const user = await controller.getOne({ email: payload.email });
            if (!user) {
                return done(null, false);
             } else{
