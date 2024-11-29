@@ -1,6 +1,5 @@
 import express from "express";
 import handlebars from 'express-handlebars';
-import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cookeParser from "cookie-parser";
@@ -11,6 +10,7 @@ import { Server } from "socket.io";
 import config from "./config.js";
 import __dirname from "./utils.js";
 
+import MongoSingleton from "./services/mongo.singleton.js";
 import productsRouter from "./routes/products.router.js";
 import cartRouter from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(receptorMiddleware);
 
-app.use(cors({origin: "*"}));
+app.use(cors({origin: "*", credentials: true}));
 app.use(cookeParser(config.SECRET));
 app.use(session({
     store: MongoStore.create({
@@ -58,7 +58,7 @@ app.use("/api/cookies", cookiesRouter);
 app.use("/api/sessions", sessionsRouter)
 
 const httpServer = app.listen(config.PORT, async() => {
-    await mongoose.connect(config.MONGODB_URI);
+    MongoSingleton.getInstance();
     console.log(`Server activo en puerto ${config.PORT}, conectado a bbdd`);
     
     const socketServer = new Server(httpServer);
@@ -78,4 +78,3 @@ const httpServer = app.listen(config.PORT, async() => {
 });
 
 export default httpServer;
-mongoose.connect(config.MONGODB_URI);
