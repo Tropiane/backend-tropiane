@@ -1,6 +1,6 @@
-import usersController from "../controllers/users.controller.js";
+import UserController from "../controllers/users.controller.js";
 
-const controller = new usersController();
+const controller = new UserController();
 
 const validateRegister = async (req, res, next) => {
     const {email} = req.body;

@@ -1,7 +1,7 @@
 import usersServices from "../services/users.service.js";
 const service = new usersServices();
 
-class usersController {
+class UserController {
     constructor(){}
     
     async getAll(){
@@ -78,4 +78,4 @@ class usersController {
     }
 }
 
-export default usersController
+export default UserController

@@ -1,13 +1,15 @@
 import { Router } from 'express';
-import cartsManager from '../managers/cartsManager.js';
+import CartController from '../controllers/carts.controller.js';
 
 const cartsRouter = Router();
+
+const cartController = new CartController();
 
 cartsRouter.get('/:cid', async (req, res) => {
     const { cid } = req.params;
 
     try {
-        const cart = await cartsManager.getCart(cid);
+        const cart = await cartController.getCart(cid);
         res.send(cart);
     } catch (error) {
         console.log(error);
@@ -16,7 +18,7 @@ cartsRouter.get('/:cid', async (req, res) => {
 
 cartsRouter.post('/', async (req, res) => {
     try {
-        const id = await cartsManager.createCart();
+        const id = await cartController.createCart();
         res.send('cart Id created: ' + id);
     } catch (error) {
         console.log(error);
@@ -28,7 +30,7 @@ cartsRouter.put("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
     try {
-        quantity ? await cartsManager.updateProductQuantity(cid, pid, quantity) : await cartsManager.addProductToCart(cid, pid);
+        quantity ? await cartController.updateProductQuantity(cid, pid, quantity) : await cartController.addProductToCart(cid, pid);
         res.send("Product added/updated in cart");
     } catch (error) {
         console.log(error);
@@ -39,7 +41,7 @@ cartsRouter.put("/:cid/product/:pid", async (req, res) => {
 cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     try {
-        await cartsManager.deleteProductFromCart(cid, pid);
+        await cartController.deleteProductFromCart(cid, pid);
         res.send("Product deleted from cart");
     } catch (error) {
         console.log(error);
@@ -49,7 +51,7 @@ cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
 cartsRouter.delete("/:cid", async (req, res) => {
     const { cid } = req.params;
     try {
-        await cartsManager.deleteAllProducts(cid);
+        await cartController.deleteAllProducts(cid);
         res.send("Cart deleted");
     } catch (error) {
         console.log(error);

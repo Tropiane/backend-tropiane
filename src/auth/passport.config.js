@@ -1,13 +1,13 @@
 import passport from "passport";
 import config from "../config.js";
 import local from "passport-local";
-import usersController from "../controllers/users.controller.js";
+import UserController from "../controllers/users.controller.js";
 import GitHubStrategy from "passport-github2";
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { createToken } from "../utils.js";
 
 const localStrategy = local.Strategy;
-const controller = new usersController();
+const controller = new UserController();
 const options = {
     jwtFromRequest: ExtractJwt.fromExtractors([
         ExtractJwt.fromAuthHeaderAsBearerToken(),

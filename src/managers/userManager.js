@@ -1,11 +1,11 @@
-import usersController from "../controllers/users.controller.js";
+import UserController from "../controllers/users.controller.js";
 
 class userManager {
     constructor(){}
     
     async getAll(){
         try {
-            return await usersController.getAll();
+            return await UserController.getAll();
         } catch (error) {
             console.log(error);
             
@@ -14,7 +14,7 @@ class userManager {
 
     async getOne(filter){
         try {
-            return await usersController.getOne(filter);
+            return await UserController.getOne(filter);
         } catch (error) {
             console.log(error);
             
@@ -23,7 +23,7 @@ class userManager {
 
     async getById(id){
         try {
-            return await usersController.findById(id);
+            return await UserController.findById(id);
         } catch (error) {
             console.log(error);
             
@@ -32,7 +32,7 @@ class userManager {
 
     async create(user) {
         try {
-            return await usersController.create(user);
+            return await UserController.create(user);
         } catch (error) {
             if (error.code === 11000) { 
                 throw new Error("Email already exists");
@@ -43,7 +43,7 @@ class userManager {
 
     async delete(id){
         try {
-            return await usersController.delete(id);
+            return await UserController.delete(id);
         } catch (error) {
             console.log(error);
             
@@ -52,7 +52,7 @@ class userManager {
 
     async update(id, user){
         try {
-            return await usersController.update(id, user);
+            return await UserController.update(id, user);
         } catch (error) {
             console.log(error);
             
@@ -61,7 +61,7 @@ class userManager {
 
     async authenticate(username, password){
         try {
-            return await usersController.authenticate(username, password);
+            return await UserController.authenticate(username, password);
         } catch (error) {
             json.status(400).json({message: error.message});
         }
@@ -70,7 +70,7 @@ class userManager {
     //use on middleware Register
     async validateMail(email){
         try {
-            return await usersController.validateMail(email);
+            return await UserController.validateMail(email);
         } catch (error) {
             json.status(400).json({message: error.message});
         }

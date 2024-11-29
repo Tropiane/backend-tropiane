@@ -1,6 +1,6 @@
 import Products from "../controllers/models/products.model.js";
 
-class ProductsManager {
+class ProductsService {
     constructor() {
         this.products = [];
     }
@@ -36,6 +36,4 @@ class ProductsManager {
     }
 }
 
-const productsmanager = new ProductsManager();
-
-export default productsmanager;
+export default ProductsService;

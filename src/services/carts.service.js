@@ -1,6 +1,6 @@
 import Cart from "../controllers/models/cart.model.js";
 
-class CartsManager{
+class CartService{
 
     constructor(){
         this.carts = [];
@@ -107,6 +107,4 @@ class CartsManager{
 
 }
 
-const cartsManager = new CartsManager();
-
-export default cartsManager
+export default CartService

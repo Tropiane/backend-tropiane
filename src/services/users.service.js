@@ -1,5 +1,5 @@
 import { json } from "express";
-import UserModel from "../models/user.model.js";
+import UserModel from "../controllers/models/user.model.js";
 import { createHash, isValidHash } from "../utils.js";
 
 class usersServices {
