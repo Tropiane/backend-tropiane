@@ -1,5 +1,5 @@
-import usersServices from "../services/users.service.js";
-const service = new usersServices();
+import UserService from "../services/factory.service.js";
+const service = new UserService();
 
 class UserController {
     constructor(){}
@@ -24,7 +24,7 @@ class UserController {
 
     async getById(id){
         try {
-            return await service.findById(id);
+            return await service.getById(id);
         } catch (error) {
             console.log(error);
             

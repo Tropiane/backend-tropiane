@@ -7,7 +7,9 @@ class usersServices {
     
     async getAll(){
         try {
-            return await UserModel.find().lean();
+            const users = await UserModel.find().lean();
+            const {password, ...result} = users;
+            return result;
         } catch (error) {
             console.log(error);
             
@@ -30,7 +32,7 @@ class usersServices {
 
     async getById(id){
         try {
-            return await UserModel.findById(id);
+            return await UserModel.findById({_id: id}).lean();
         } catch (error) {
             console.log(error);
             
