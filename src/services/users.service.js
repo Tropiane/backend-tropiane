@@ -1,77 +1,34 @@
 import { json } from "express";
+import { isValidHash } from "../utils.js";
+
 import UserModel from "../controllers/models/user.model.js";
-import { createHash, isValidHash } from "../utils.js";
+import usersDao from "../dao/users.dao.js";
 
 class usersServices {
     constructor(){}
     
     async getAll(){
-        try {
-            const users = await UserModel.find().lean();
-            const {password, ...result} = users;
-            return result;
-        } catch (error) {
-            console.log(error);
-            
-        }
+        return await usersDao.getAll();
     }
 
     async getOne(filter){
-        try {
-            const findUser = await UserModel.findOne(filter).lean();
-
-            if (!findUser) { return "user not found" }
-
-            const {password, ...result} = findUser;
-            return result;
-        } catch (error) {
-            console.log(error);
-            
-        }
+        return await usersDao.getOne(filter);
     }
 
     async getById(id){
-        try {
-            return await UserModel.findById({_id: id}).lean();
-        } catch (error) {
-            console.log(error);
-            
-        }
+        return await usersDao.getById(id);
     }
 
     async create(user) {
-        try {
-            user.password = createHash(user.password);
-
-            return await UserModel.create(user);
-        } catch (error) {
-            if (error.code === 11000) { 
-                throw new Error("Email already exists");
-            }
-            throw error;
-        }
+        return await usersDao.create(user);
     }
 
     async delete(id){
-        try {
-            return await UserModel.findByIdAndDelete(id).lean();
-        } catch (error) {
-            console.log(error);
-            
-        }
+        return await usersDao.delete(id);
     }
 
     async update(id, user){
-        const findUser = UserModel.findById(id);
-
-        try {
-            if (!findUser) { return "user not found" }
-
-            return await UserModel.findByIdAndUpdate(id, user);
-        } catch (error) {
-            console.log(error);
-            
-        }
+        return await usersDao.update(id, user);
     }
 
     async authenticate(username, password){

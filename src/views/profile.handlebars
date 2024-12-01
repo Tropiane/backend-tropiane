@@ -1,9 +1,16 @@
 <div class="bg-gradient-to-r from-gray-700 to-blue-500 h-screen ">
+    <nav class="navBar">
+        <a href="/cart">Cart</a>
+        <a href="/products">Products</a>
+        <a href="/createProducts">Create Products</a>
+    </nav>
     <h1 class="text-2xl mx-1.5">Profile</h1>
     <p class="bg-slate-500 rounded-lg max-w-max mx-1.5 mt-1.5 font-semibold">Username: {{data.firstName}} {{data.lastName}}</p>
     <p class="bg-slate-500 rounded-lg max-w-max mx-1.5 mt-1.5 font-semibold">Email: {{data.email}}</p>
     <p class="bg-slate-500 rounded-lg max-w-max mx-1.5 mt-1.5 font-semibold">Role: {{data.role}}</p>
     <form action="/api/users/logoutjwt" method="POST">
-    <button type="submit" class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 mx-1.5 mt-1.5">Logout</button>
+    <button type="submit" id="logout" class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 mx-1.5 mt-1.5">Logout</button>
     </form>
 </div>
+
+<script src="/js/profile.js"></script>

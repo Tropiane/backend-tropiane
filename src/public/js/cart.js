@@ -3,9 +3,7 @@ const emptyCart = document.querySelector(".emptyCart");
 const cart = document.querySelector(".cart");
 
 const setCart = () => {
-     const cartId = cart.target.id;
-     console.log(cartId);
-     
+     localStorage.setItem("cartID", cart.id);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
