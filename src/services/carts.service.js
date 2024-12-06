@@ -14,7 +14,7 @@ class CartService{
     }
 
     async getCart(cart){
-        return await service.getCart(cart);
+        return await service.productsInCart(cart);
     }
 
     async getTotal(cart) {
@@ -33,6 +33,7 @@ class CartService{
 
     async addProductToCart(cart, product) {
         const cartDB = await service.getCart(cart);
+        
         try {
             if (!cartDB) {
                 throw new Error("Cart not found");

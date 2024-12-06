@@ -7,12 +7,10 @@ import UserDto from "../dto/user.dto.js";
 import validateRegister from "../middlewares/register.js";
 import initAuthStrategies from "../auth/passport.config.js";
 import config from "../config.js";
-import CartController from "../controllers/carts.controller.js";
 import httpServer from "../app.js";
 
 const userRouter = Router();
 const userController = new UserController();
-const cartController = new CartController();
 
 initAuthStrategies();
 

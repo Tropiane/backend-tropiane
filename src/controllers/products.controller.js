@@ -5,6 +5,10 @@ const service = new ProductsService();
 class ProductController {
     constructor() {}
 
+    async create(product) {
+        return await service.create(product);
+    }
+    
     async getPaginatedProducts(page, limit, category, price, status) {
         return await service.getPaginatedProducts(page, limit, category, price, status);
     }

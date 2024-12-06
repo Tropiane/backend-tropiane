@@ -1,9 +1,12 @@
-import ProductsDao from "../dao/products.dao.js";
+import Products from "../controllers/models/products.model.js";
 
-const service = new ProductsDao();
 class ProductsService {
     constructor() {
         this.products = [];
+    }
+
+    async create(product) {
+        return await Products.create(product);
     }
 
     async getPaginatedProducts(page, limit, category, price, status) {
@@ -17,11 +20,11 @@ class ProductsService {
             limit: limit || 10,
             sort: { price: price || 1 }
         };
-        return await service.getPaginatedProducts(query, options);
+        return await Products.getPaginatedProducts(query, options);
     }
 
     async getProductById(id) {
-        return await service.getProductById(id);
+        return await Products.getProductById(id);
     }
 }
 

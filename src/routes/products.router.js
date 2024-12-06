@@ -1,7 +1,10 @@
 import { Router } from "express";
 import uploader from "../middlewares/uploader.js";
 import Products from "../controllers/models/products.model.js";
+import ProductDto from "../dto/product.dto.js";
+import ProductController from "../controllers/products.controller.js";
 
+const controller = new ProductController();
 const productsRouter = Router();
 
 productsRouter.get("/", async (req, res) => {
@@ -50,13 +53,14 @@ productsRouter.post("/", uploader.single('image'), async (req, res) => {
     try {
         const body = req.body;
         const image = req.file ? `/images/${req.file.filename}` : null;
+        const data = new ProductDto(body, image);
 
         const newProduct = {
-            ...body,
+            ...data,
             image
         };
-
-        await Products.create(newProduct);
+        
+        await controller.create(newProduct);
         res.status(200).json({ message: "Product created", product: newProduct });
     } catch (error) {
         res.status(400).json({ message: error.message });

@@ -74,12 +74,11 @@ viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
     try {
         const cart = await cartController.getCart(findCart);
         const sumTotal = await cartController.getTotal(findCart);
-        console.log("cart", cart);
         
         res.render("cart",{
             css: "cart.css",
             findCart,
-            cart,
+            cart: cart.products,
             sumTotal
         })
     } catch (error) {

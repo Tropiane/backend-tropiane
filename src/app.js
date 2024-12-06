@@ -15,6 +15,7 @@ import productsRouter from "./routes/products.router.js";
 import cartRouter from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
 import userRouter from "./routes/user.router.js";
+import ticketsRouter from "./routes/tickets.router.js";
 import cookiesRouter from "./routes/cookies.router.js";
 import sessionsRouter from "./routes/sessions.router.js";
 
@@ -54,6 +55,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/cart", cartRouter);
 app.use("/", viewsRouter);
 app.use("/api/users", userRouter)
+app.use("/api/tickets", ticketsRouter);
 app.use("/api/cookies", cookiesRouter);
 app.use("/api/sessions", sessionsRouter)
 

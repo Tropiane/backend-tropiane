@@ -14,7 +14,7 @@ export default class cartDao{
     }
 
     async getCart(cid){
-        return await controller.find({_id: cid});
+        return await controller.findById(cid);
     }
 
     async productsInCart(cid){
