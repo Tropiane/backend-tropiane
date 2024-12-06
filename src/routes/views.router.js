@@ -74,7 +74,8 @@ viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
     try {
         const cart = await cartController.getCart(findCart);
         const sumTotal = await cartController.getTotal(findCart);
-
+        console.log("cart", cart);
+        
         res.render("cart",{
             css: "cart.css",
             findCart,
@@ -106,8 +107,16 @@ viewsRouter.get("/login", async (req, res)=>{
 });
 
 viewsRouter.get("/register", async (req, res)=>{
+    httpServer.on('errorLogin', (error) => {
+        errorLogin = error
+        setTimeout(() => {
+            errorLogin = ''
+        }, 3000);      
+    })
+
     res.render("register", {
-        css: "register.css"
+        css: "register.css",
+        data:errorLogin
     })
 });
 

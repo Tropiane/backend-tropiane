@@ -3,6 +3,7 @@ import passport from "passport";
 
 import { createToken, verifyToken } from "../utils.js";
 import UserController from "../controllers/users.controller.js";
+import UserDto from "../dto/user.dto.js";
 import validateRegister from "../middlewares/register.js";
 import initAuthStrategies from "../auth/passport.config.js";
 import config from "../config.js";
@@ -51,7 +52,8 @@ userRouter.param("uid", async (req, res, next, uid) => {
 // Other routes
 userRouter.get("/", async (req, res) => {
     try {
-        const result = await userController.getAll();
+        const data = await userController.getAll();
+        const result = data.map(user => new UserDto(user));
         res.send({
             status: "success",
             payload: result
@@ -64,7 +66,9 @@ userRouter.get("/", async (req, res) => {
 userRouter.get("/:uid", async (req, res) => {
     const { uid } = req.params;
     try {
-        const result = await userController.getById(uid);
+        const user = await userController.getById(uid);
+        const result = new UserDto(user);
+        
         res.send({
             status: "success",
             payload: result
@@ -134,14 +138,15 @@ userRouter.post("/logoutjwt", (req, res) => {
 
 userRouter.post("/register", validateRegister, async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
-    const cart = await cartController.createCart();
+    let cart;
     const user = { firstName, lastName, email, password, cart };
     try {
         if (user.name === "" || user.age === "" || user.email === "" || user.password === "") {
-            res.status(400).json({ message: "All fields are required" });
+            res.redirect("/register");
+            httpServer.emit('errorLogin', 'Todos los campos son obligatorios');
         } else {
             await userController.create(user);
-            res.status(200).json({ message: "User created with email: " + user.email });
+            res.redirect("/login")
         }
     } catch (error) {
         console.log(error);
@@ -176,7 +181,8 @@ userRouter.post("/jwtlogin", async (req, res) => {
             httpServer.emit('errorLogin', 'Credenciales incorrectas');
         }
     } else {
-        res.status(400).send({ error: 'Faltan campos: obligatorios username, password', data: [] });
+        res.redirect("/login");
+        httpServer.emit('errorLogin', 'Faltan campos: obligatorios username, password');
     }
 });
 

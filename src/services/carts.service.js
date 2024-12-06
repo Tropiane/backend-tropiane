@@ -1,4 +1,6 @@
-import Cart from "../controllers/models/cart.model.js";
+import cartDao from "../dao/carts.dao.js";
+
+const service = new cartDao();
 
 class CartService{
 
@@ -8,26 +10,18 @@ class CartService{
     }
 
     async createCart(){
-        
-        const newCart = await Cart.create({products: []});
-        console.log("Cart ID created " + newCart._id);
-        
-        return newCart._id;
+        return await service.createCart();
     }
 
     async getCart(cart){
-        let cartDB = await Cart.findById(cart).populate("products.product");
-        
-        return cartDB.products;
+        return await service.getCart(cart);
     }
 
     async getTotal(cart) {
-        let cartDB = await Cart.findById(cart).populate("products.product");
+        let cartDB = await service.productsInCart(cart);
         let totalPrice = 0;
-
         
-        cartDB.products.forEach((product) => {
-            
+        cartDB.products.map((product) => {
             if (product.product) {
                 totalPrice += product.product.price * product.quantity;
             } else {
@@ -38,8 +32,8 @@ class CartService{
     }
 
     async addProductToCart(cart, product) {
+        const cartDB = await service.getCart(cart);
         try {
-            const cartDB = await Cart.findById(cart);
             if (!cartDB) {
                 throw new Error("Cart not found");
             }
@@ -56,7 +50,7 @@ class CartService{
 
     async updateProductQuantity(cart, product, quantity) {
         try {
-            const cartDB = await Cart.findById(cart);
+            const cartDB = await service.getCart(cart);
             if (!cartDB) {
                 throw new Error("Cart not found");
             }
@@ -73,7 +67,7 @@ class CartService{
 
     async deleteProductFromCart(cart, product) {
         try {
-            const cartDB = await Cart.findById(cart);
+            const cartDB = await service.getCart(cart);
             if (!cartDB) {
                 throw new Error("Cart not found");
             }
@@ -93,7 +87,7 @@ class CartService{
 
     async deleteAllProducts(cart) {
         try {
-            const cartDB = await Cart.findById(cart);
+            const cartDB = await service.getCart(cart);
             if (!cartDB) {
                 throw new Error("Cart not found");
             }

@@ -1,5 +1,6 @@
-import Products from "../controllers/models/products.model.js";
+import ProductsDao from "../dao/products.dao.js";
 
+const service = new ProductsDao();
 class ProductsService {
     constructor() {
         this.products = [];
@@ -16,23 +17,11 @@ class ProductsService {
             limit: limit || 10,
             sort: { price: price || 1 }
         };
-    
-        try { 
-            
-            return await Products.paginate(query, options);
-        } catch (error) {
-            console.error("Error en la paginación:", error);
-            throw new Error(error.message);
-        }
+        return await service.getPaginatedProducts(query, options);
     }
 
     async getProductById(id) {
-        try {
-            return await Products.findById({ _id: id });
-        } catch (error) {
-            console.error("Error al obtener producto por ID:", error);
-            throw new Error(error.message);
-        }
+        return await service.getProductById(id);
     }
 }
 
