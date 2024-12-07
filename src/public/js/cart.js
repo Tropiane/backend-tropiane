@@ -1,6 +1,17 @@
 const cartProduct = document.querySelector(".cartContainer");
 const emptyCart = document.querySelector(".emptyCart");
 const cart = document.querySelector(".cart");
+const checkout = document.querySelector(".checkout");
+
+const code = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const generateCode = () => {
+    let code = "";
+    for (let i = 0; i < 10; i++) {
+        const random = Math.floor(Math.random() * code.length);
+        code = random + code;
+    }
+    return code;
+    }
 
 const setCart = () => {
      localStorage.setItem("cartID", cart.id);
@@ -77,4 +88,20 @@ emptyCart.addEventListener("click", async (e) => {
     } catch (error) {
         console.log(error);
     }
+})
+
+checkout.addEventListener("click", async (e) => {
+    e.preventDefault();
+    
+    const total = document.querySelector(".total").textContent.split(" ")[2];
+    const user = localStorage.getItem("user");
+    const code = generateCode();
+    await fetch("/api/tickets", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ total, user, code}),
+    })
+    
 })

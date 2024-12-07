@@ -2,13 +2,15 @@
     <a class="cart" id="{{findCart}}">Cart</a>
     <a href="/products">Products</a>
     <a href="/createProducts">Create Products</a>
+    {{#if user}}
+        <a href="/profile">Profile</a>
+    {{/if}}
 </nav>
 <h1>Tu carrito</h1>
 <button class="emptyCart">Vaciar Carrito</button>
 <div class="cartContainer">
-
     {{#if cart}}
-    <p class="total">Total: ${{sumTotal}}</p>
+    <p class="total">Total: $ {{sumTotal}}</p>
     {{#each cart}}
         <div class="cartItem">
             <img src={{product.image}}>
@@ -20,6 +22,7 @@
             </div>
         </div>
     {{/each}}
+        <button class="checkout">Checkout</button>
     {{else}}
     <h2>No hay productos en el carrito</h2>
     {{/if}}

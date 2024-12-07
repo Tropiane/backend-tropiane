@@ -14,9 +14,10 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const data = req.body;
-        const ticket = new ticketDto(data.code, data.purchaseDatetime=Date.now(), data.amount, data.purchaser);
+        
+        const ticket = new ticketDto(data.code, data.purchaseDatetime=Date.now(), data.total, data.user); 
         const newTicket = await controller.create(ticket);
-    
+
         res.json({status: "success", payload: newTicket});
     } catch (error) {
         res.send({status: "error", error: error.message});

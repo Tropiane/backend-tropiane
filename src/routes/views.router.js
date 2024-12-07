@@ -79,7 +79,8 @@ viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
             css: "cart.css",
             findCart,
             cart: cart.products,
-            sumTotal
+            sumTotal,
+            user: user.email
         })
     } catch (error) {
       console.log(error); 

@@ -20,11 +20,11 @@ class ProductsService {
             limit: limit || 10,
             sort: { price: price || 1 }
         };
-        return await Products.getPaginatedProducts(query, options);
+        return await Products.paginate(query, options);
     }
 
     async getProductById(id) {
-        return await Products.getProductById(id);
+        return await Products.findById(id);
     }
 }
 
