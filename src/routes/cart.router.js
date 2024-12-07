@@ -1,24 +1,23 @@
 import { Router } from 'express';
 import CartController from '../controllers/carts.controller.js';
 
-const cartsRouter = Router();
+const router = Router();
+const controller = new CartController();
 
-const cartController = new CartController();
-
-cartsRouter.get('/:cid', async (req, res) => {
+router.get('/:cid', async (req, res) => {
     const { cid } = req.params;
 
     try {
-        const cart = await cartController.getCart(cid);
+        const cart = await controller.getCart(cid);
         res.send(cart);
     } catch (error) {
         console.log(error);
     }
 })
 
-cartsRouter.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        const id = await cartController.createCart();
+        const id = await controller.createCart();
         res.send('cart Id created: ' + id);
     } catch (error) {
         console.log(error);
@@ -26,11 +25,11 @@ cartsRouter.post('/', async (req, res) => {
     }
 })
 
-cartsRouter.put("/:cid/product/:pid", async (req, res) => {
+router.put("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
     try {
-        quantity ? await cartController.updateProductQuantity(cid, pid, quantity) : await cartController.addProductToCart(cid, pid);
+        quantity ? await controller.updateProductQuantity(cid, pid, quantity) : await controller.addProductToCart(cid, pid);
         res.send("Product added/updated in cart");
     } catch (error) {
         console.log(error);
@@ -38,24 +37,25 @@ cartsRouter.put("/:cid/product/:pid", async (req, res) => {
     }
 });
 
-cartsRouter.delete("/:cid/product/:pid", async (req, res) => {
+router.delete("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     try {
-        await cartController.deleteProductFromCart(cid, pid);
+        await controller.deleteProductFromCart(cid, pid);
         res.send("Product deleted from cart");
     } catch (error) {
         console.log(error);
     }
 })
 
-cartsRouter.delete("/:cid", async (req, res) => {
+router.delete("/:cid", async (req, res) => {
     const { cid } = req.params;
     try {
-        await cartController.deleteAllProducts(cid);
+        await controller.deleteAllProducts(cid);
         res.send("Cart deleted");
     } catch (error) {
         console.log(error);
     }
 })
 
-export default cartsRouter;
+const cartRouter = router;
+export default cartRouter;

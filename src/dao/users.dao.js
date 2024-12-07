@@ -1,6 +1,7 @@
 import UserModel from "../controllers/models/user.model.js";
 import { createHash } from "../utils.js";
 import CartController from "../controllers/carts.controller.js";
+import UserDto from "../dto/user.dto.js";
 
 const controller = new CartController();
 
@@ -19,11 +20,12 @@ class UsersDao {
     async getOne(filter){
         try {
             const findUser = await UserModel.findOne(filter).lean();
+            const user = new UserDto(findUser);
 
             if (!findUser) { return "user not found" }
-
-            const {password, ...result} = findUser;
-            return result;
+            const {cart, ...rest} = user;
+            return rest;
+            
         } catch (error) {
             console.log(error);
             

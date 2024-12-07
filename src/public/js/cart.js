@@ -1,7 +1,7 @@
 const cartProduct = document.querySelector(".cartContainer");
 const emptyCart = document.querySelector(".emptyCart");
-const cart = document.querySelector(".cart");
 const checkout = document.querySelector(".checkout");
+const cart = localStorage.getItem("cartID");
 
 const code = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 const generateCode = () => {
@@ -11,7 +11,7 @@ const generateCode = () => {
         code = random + code;
     }
     return code;
-    }
+}
 
 const setCart = () => {
      localStorage.setItem("cartID", cart.id);
@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 cartProduct.addEventListener("click", async (e) => {
     e.preventDefault();
-    const cart = localStorage.getItem("cartID");
 
     if (e.target.classList.contains("delete")) {
         const productId = e.target.id;
@@ -79,7 +78,7 @@ cartProduct.addEventListener("click", async (e) => {
 
 emptyCart.addEventListener("click", async (e) => {
     e.preventDefault();
-    const cart = localStorage.getItem("cartID");
+
     try {
         await fetch(`/api/cart/${cart}`, {
             method: "DELETE",
