@@ -20,7 +20,7 @@ class CartService{
     async getTotal(cart) {
         let cartDB = await service.productsInCart(cart);
         let totalPrice = 0;
-        
+
         cartDB.products.map((product) => {
             if (product.product) {
                 totalPrice += product.product.price * product.quantity;

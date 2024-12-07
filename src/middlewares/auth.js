@@ -11,7 +11,4 @@ const auth = (req, res, next) => {
     }
 };
 
-const userAuth = (req, res, next) => {}
-const adminAuth = (req, res, next) => {}
-
 export default auth

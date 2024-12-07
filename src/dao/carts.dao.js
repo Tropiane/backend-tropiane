@@ -6,15 +6,13 @@ export default class cartDao{
     constructor(){};
 
     async createCart(){
-        
         const newCart = await controller.create({products: []});
-        console.log("Cart ID created " + newCart._id);
         
         return newCart._id;
     }
 
     async getCart(cid){
-        return await controller.findById(cid);
+        return await controller.findOne({_id: cid});
     }
 
     async productsInCart(cid){

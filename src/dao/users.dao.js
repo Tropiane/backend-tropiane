@@ -23,7 +23,7 @@ class UsersDao {
             const user = new UserDto(findUser);
 
             if (!findUser) { return "user not found" }
-            const {cart, ...rest} = user;
+            const {password, ...rest} = user;
             return rest;
             
         } catch (error) {

@@ -5,6 +5,8 @@ import CartController from "../controllers/carts.controller.js";
 import config from "../config.js";
 import httpServer from "../app.js";
 import { verifyToken } from "../utils.js";
+import adminAuth from "../middlewares/admin.auth.js";
+import userAuth from "../middlewares/user.auth.js";
 
 const viewsRouter = Router();
 
@@ -43,7 +45,7 @@ viewsRouter.get("/products", async(req, res)=>{
     }
 });
 
-viewsRouter.get("/createproducts", async (req, res)=>{
+viewsRouter.get("/createproducts", verifyToken, adminAuth, async (req, res)=>{
     try {
         res.render("createProducts", {
             css: "createProducts.css"
@@ -71,6 +73,7 @@ viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
     const data = req.user;
     const user = await userController.getOne({email:data.email});
     const findCart = user.cart;
+    
     try {
         const cart = await cartController.getCart(findCart);
         const sumTotal = await cartController.getTotal(findCart);

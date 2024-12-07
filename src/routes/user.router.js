@@ -164,8 +164,9 @@ userRouter.post("/jwtlogin", async (req, res) => {
     const { username, password } = req.body;
     if (username !== '' && password !== '') {
         const process = await userController.authenticate(username, password);
+        const user = await userController.getOne({ email: username });
         if (process) {
-            const payload = { email: username, admin: true };
+            const payload = { email: username, admin: true, role: user.role };
             const token = createToken(payload, '1h');
             res.cookie(`${config.APP_NAME}_cookie`, token, {
                 httpOnly: true,

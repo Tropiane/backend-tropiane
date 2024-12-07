@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import CartController from '../controllers/carts.controller.js';
+import userAuth from '../middlewares/user.auth.js';
+import { verifyToken } from '../utils.js';
 
 const router = Router();
 const controller = new CartController();
@@ -25,9 +27,10 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put("/:cid/product/:pid", async (req, res) => {
+router.put("/:cid/product/:pid",verifyToken, userAuth, async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
+    
     try {
         quantity ? await controller.updateProductQuantity(cid, pid, quantity) : await controller.addProductToCart(cid, pid);
         res.send("Product added/updated in cart");
@@ -37,7 +40,7 @@ router.put("/:cid/product/:pid", async (req, res) => {
     }
 });
 
-router.delete("/:cid/product/:pid", async (req, res) => {
+router.delete("/:cid/product/:pid",verifyToken, userAuth, async (req, res) => {
     const { cid, pid } = req.params;
     try {
         await controller.deleteProductFromCart(cid, pid);
@@ -47,7 +50,7 @@ router.delete("/:cid/product/:pid", async (req, res) => {
     }
 })
 
-router.delete("/:cid", async (req, res) => {
+router.delete("/:cid",verifyToken, userAuth, async (req, res) => {
     const { cid } = req.params;
     try {
         await controller.deleteAllProducts(cid);
