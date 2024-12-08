@@ -95,11 +95,13 @@ emptyCart.addEventListener("click", async (e) => {
 
 checkout.addEventListener("click", async (e) => {
     e.preventDefault();
-    
+
+    const cart = localStorage.getItem("cartID");
     const total = document.querySelector(".total").textContent.split(" ")[2];
     const user = localStorage.getItem("user");
     const code = generateCode();
-    await fetch("/api/tickets", {
+
+    await fetch(`/api/cart/${cart}/purchase`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

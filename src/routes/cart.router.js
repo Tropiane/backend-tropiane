@@ -60,5 +60,23 @@ router.delete("/:cid",verifyToken, userAuth, async (req, res) => {
     }
 })
 
+router.get("/:cid/purchase",verifyToken, userAuth, async (req, res) => {
+    const { cid } = req.params;
+    const cart= await controller.getCart(cid);
+    res.send(cart);
+})
+
+router.post("/:cid/purchase",verifyToken, userAuth, async (req, res) => {
+    const { cid } = req.params;
+    const data = req.body;
+    
+    try {
+        await controller.purchase(cid, data);
+        res.send("Purchase completed");
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 const cartRouter = router;
 export default cartRouter;

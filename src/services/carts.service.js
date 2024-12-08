@@ -1,6 +1,11 @@
 import cartDao from "../dao/carts.dao.js";
+import ProductController from "../controllers/products.controller.js";
+import TicketController from "../controllers/tickets.controller.js";
+import ticketDto from "../dto/ticket.dto.js";
 
 const service = new cartDao();
+const productController = new ProductController();
+const ticketController = new TicketController();
 
 class CartService{
 
@@ -69,10 +74,12 @@ class CartService{
     async deleteProductFromCart(cart, product) {
         try {
             const cartDB = await service.getCart(cart);
+
             if (!cartDB) {
                 throw new Error("Cart not found");
             }
             const findProduct = cartDB.products.findIndex((p) => p._id.toString() === product);
+            
             if (findProduct === -1) {
                 throw new Error("Product not found");
             }else{
@@ -97,6 +104,40 @@ class CartService{
             return result;
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    async purchase(cart, data) {
+        const cartDB = await service.productsInCart(cart);
+        const user = data.user;
+        const code = data.code;
+        let totalPrice = 0;
+
+        try {
+            cartDB.products.map(async (product) =>{
+                const id = product._id.toString();
+                
+                try {
+                    if (product.quantity < product.product.stock) {
+                        totalPrice += product.product.price * product.quantity;
+                        product.product.stock -= product.quantity;
+                        this.deleteProductFromCart(cart, id);                    
+                        await product.product.save();
+                    }else{
+                        console.log('no hay stock para el producto ' + product.product.title);
+                    }
+                } catch (error) {
+                    console.log(error);
+                    
+                }
+                
+            });
+            const ticket = new ticketDto(code, Date.now(), totalPrice, user);      
+            return await ticketController.create(ticket);
+                  
+        } catch (error) {
+            console.log(error);
+            
         }
     }
 
