@@ -3,6 +3,7 @@ import uploader from "../middlewares/uploader.js";
 import Products from "../controllers/models/products.model.js";
 import ProductDto from "../dto/product.dto.js";
 import ProductController from "../controllers/products.controller.js";
+import {authorizeRole} from "../middlewares/authorize.role.js";
 
 const controller = new ProductController();
 const productsRouter = Router();
@@ -67,7 +68,7 @@ productsRouter.post("/", uploader.single('image'), async (req, res) => {
     }
 });
 
-productsRouter.patch("/:id", async (req, res)=>{
+productsRouter.patch("/:id",authorizeRole("ADMIN"), async (req, res)=>{
     try {
         const {id} = req.params;
         const body = req.body;
@@ -78,7 +79,7 @@ productsRouter.patch("/:id", async (req, res)=>{
     }
 })
 
-productsRouter.delete("/:pid", async (req, res)=>{
+productsRouter.delete("/:pid",authorizeRole("ADMIN"), async (req, res)=>{
     const {pid} = req.params;
     await Products.deleteOne({_id: pid});
     

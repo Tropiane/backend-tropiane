@@ -85,11 +85,15 @@ const initAuthStrategies = () => {
 
     passport.use("current", new JwtStrategy(options, async (payload, done) => {
         try {
-           const user = await controller.getOne({ email: payload.email });
+           const user = await controller.getOne({ email: payload.email});
+           
            if (!user) {
                return done(null, false);
             } else{
-                return done(null, {email: user.email, admin: user.admin});
+                if (user.role !== payload.role) {
+                    return done(null, false);
+                }
+                return done(null, {email: user.email, role: user.role});
            }
         } catch (error) {
             

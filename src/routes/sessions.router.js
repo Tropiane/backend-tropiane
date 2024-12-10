@@ -8,13 +8,15 @@ const sessionsRouter = Router();
 
 sessionsRouter.get("/current", passport.authenticate("current", { session: false }), async(req, res) => {
     const data = req.user;
+    const role = "USER";
     const user = await controller.getOne({email: data.email});
 
     try {
         res.send({
             status: "success",
             userData: user,
-            tokenData: data
+            tokenData: data,
+            role: "USER"
         })
     } catch (error) {
         console.log(error);

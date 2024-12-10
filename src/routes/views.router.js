@@ -5,8 +5,7 @@ import CartController from "../controllers/carts.controller.js";
 import config from "../config.js";
 import httpServer from "../app.js";
 import { verifyToken } from "../utils.js";
-import adminAuth from "../middlewares/admin.auth.js";
-import userAuth from "../middlewares/user.auth.js";
+import { authorizeRole } from "../middlewares/authorize.role.js";
 
 const viewsRouter = Router();
 
@@ -45,7 +44,7 @@ viewsRouter.get("/products", async(req, res)=>{
     }
 });
 
-viewsRouter.get("/createproducts", verifyToken, adminAuth, async (req, res)=>{
+viewsRouter.get("/createproducts", verifyToken, authorizeRole("ADMIN"), async (req, res)=>{
     try {
         res.render("createProducts", {
             css: "createProducts.css"

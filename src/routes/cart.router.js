@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import CartController from '../controllers/carts.controller.js';
-import userAuth from '../middlewares/user.auth.js';
 import { verifyToken } from '../utils.js';
+import { authorizeRole } from '../middlewares/authorize.role.js';
 
 const router = Router();
 const controller = new CartController();
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put("/:cid/product/:pid",verifyToken, userAuth, async (req, res) => {
+router.put("/:cid/product/:pid",verifyToken, authorizeRole("USER"), async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
     
@@ -40,7 +40,7 @@ router.put("/:cid/product/:pid",verifyToken, userAuth, async (req, res) => {
     }
 });
 
-router.delete("/:cid/product/:pid",verifyToken, userAuth, async (req, res) => {
+router.delete("/:cid/product/:pid",verifyToken, authorizeRole("USER"), async (req, res) => {
     const { cid, pid } = req.params;
     try {
         await controller.deleteProductFromCart(cid, pid);
@@ -50,7 +50,7 @@ router.delete("/:cid/product/:pid",verifyToken, userAuth, async (req, res) => {
     }
 })
 
-router.delete("/:cid",verifyToken, userAuth, async (req, res) => {
+router.delete("/:cid",verifyToken, authorizeRole("USER"), async (req, res) => {
     const { cid } = req.params;
     try {
         await controller.deleteAllProducts(cid);
@@ -60,13 +60,13 @@ router.delete("/:cid",verifyToken, userAuth, async (req, res) => {
     }
 })
 
-router.get("/:cid/purchase",verifyToken, userAuth, async (req, res) => {
+router.get("/:cid/purchase",verifyToken,authorizeRole("USER"), async (req, res) => {
     const { cid } = req.params;
     const cart= await controller.getCart(cid);
     res.send(cart);
 })
 
-router.post("/:cid/purchase",verifyToken, userAuth, async (req, res) => {
+router.post("/:cid/purchase",verifyToken, authorizeRole("USER"), async (req, res) => {
     const { cid } = req.params;
     const data = req.body;
     
