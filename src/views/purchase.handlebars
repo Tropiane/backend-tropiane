@@ -1,0 +1,15 @@
+<div class="ticketsContainer">
+    <h1>¡Tus pedidos aguardan!</h1>
+    {{#each tickets}}
+        <div class="ticket" id="{{_id}}">
+            <p>código de la compra: {{code}}</p>
+            <p>total: ${{amount}}</p>
+            <p>hora de la compra: {{purchaseDatetime}}</p>
+
+            <p>Enviaremos toda esta información a tu correo: {{purchaser}}</p>
+
+            <button>Finalizar compra</button>
+            <button>Eliminar ticket</button>
+        </div>
+    {{/each}}
+</div>

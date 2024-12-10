@@ -6,12 +6,14 @@ import config from "../config.js";
 import httpServer from "../app.js";
 import { verifyToken } from "../utils.js";
 import { authorizeRole } from "../middlewares/authorize.role.js";
+import TicketController from "../controllers/tickets.controller.js";
 
 const viewsRouter = Router();
 
 const productController = new ProductController();
 const userController = new UserController();
 const cartController = new CartController();
+const ticketController = new TicketController();
 
 let errorLogin= ''
 
@@ -87,6 +89,18 @@ viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
     } catch (error) {
       console.log(error); 
     }
+});
+
+viewsRouter.get("/cart/:cartid/purchase", verifyToken, async (req, res)=>{
+    const data = req.user;
+    const tickets = await ticketController.getAll(data.email);
+    console.log(data);
+    
+    res.render("purchase",{
+        css: "purchase.css",
+        tickets
+    })
+    
 });
 
 viewsRouter.get("/login", async (req, res)=>{

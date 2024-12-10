@@ -5,7 +5,7 @@ document.querySelector("#logout").addEventListener("click", async (e) => {
 })
 
 document.addEventListener("DOMContentLoaded", async (e) => {
-    const user = email.textContent;
+    const user = email.textContent.split(" ")[1];
     localStorage.setItem("user", user);
     
 })

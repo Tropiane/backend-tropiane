@@ -22,9 +22,9 @@ export default class TicketDao {
         }
     }
 
-    async getAll() {
+    async getAll(filter) {
         try {
-            return await Ticket.find({});
+            return await Ticket.find({purchaser: filter});
         } catch (error) {
             console.log(error);
             

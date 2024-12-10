@@ -13,8 +13,8 @@ export default class TicketService {
         return await this.ticketDao.getOne(id);
     }
 
-    async getAll() {
-        return await this.ticketDao.getAll();
+    async getAll(filter) {
+        return await this.ticketDao.getAll(filter);
     }
 
     async deleteTicket(id) {

@@ -13,8 +13,8 @@ export default class TicketController {
         return await service.getOne(id);
     }
 
-    async getAll() {
-        return await service.getAll();
+    async getAll(filter) {
+        return await service.getAll(filter);
     }
 
     async delete(id){

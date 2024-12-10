@@ -1,0 +1,33 @@
+.ticketsContainer{
+    height: 100%;
+    background: hsla(33, 100%, 53%, 1);
+
+    background: linear-gradient(90deg, hsla(33, 100%, 53%, 1) 0%, hsla(58, 100%, 68%, 1) 100%);
+
+    background: -moz-linear-gradient(90deg, hsla(33, 100%, 53%, 1) 0%, hsla(58, 100%, 68%, 1) 100%);
+
+    background: -webkit-linear-gradient(90deg, hsla(33, 100%, 53%, 1) 0%, hsla(58, 100%, 68%, 1) 100%);
+
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FF930F", endColorstr="#FFF95B", GradientType=1 );
+}
+.ticketsContainer h1{
+    text-align: center;
+    font-size: 3rem;
+}
+.ticket{
+    display: flex;
+    align-items: center;
+    width: max-content;
+    flex-direction: column;
+    border: 1px solid black;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: rgba(240, 248, 255, 0.685);
+}
+.ticket button{
+    border: 1px solid black;
+    margin: 2px;
+    padding: 3px;
+    border-radius: 5px;
+}
