@@ -94,7 +94,6 @@ viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
 viewsRouter.get("/cart/:cartid/purchase", verifyToken, async (req, res)=>{
     const data = req.user;
     const tickets = await ticketController.getAll(data.email);
-    console.log(data);
     
     res.render("purchase",{
         css: "purchase.css",

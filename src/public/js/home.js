@@ -5,6 +5,7 @@ const categories = document.querySelectorAll(".category");
 const stock = document.querySelectorAll(".stock");
 const cart = localStorage.getItem("cartID");
 const cartId = document.querySelector(".cart");
+const purchases = document.querySelector(".purchases");
 
 function updateURLParameter(param, value) {
   const currentUrl = new URL(window.location.href);
@@ -68,4 +69,10 @@ cartId.addEventListener("click", async (e) => {
   e.preventDefault();
   
   window.location.href = `/cart/${cart}`;
+})
+
+purchases.addEventListener("click", async (e) => {
+  e.preventDefault();
+  
+  window.location.href = `/cart/${cart}/purchase`;
 })

@@ -33,7 +33,7 @@ export default class TicketDao {
 
     async delete(id) {
         try {
-            return await Ticket.delete(id);
+            return await Ticket.findByIdAndDelete(id);
         } catch (error) {
             console.log(error);
             

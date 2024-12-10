@@ -36,5 +36,16 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+router.delete("/:id", async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const ticket = await controller.delete(id);
+        res.json({status: "success", payload: ticket});
+    } catch (error) {
+        res.send({status: "error", error: error.message});
+    }
+})
+
 const ticketsRouter = router;
 export default ticketsRouter;

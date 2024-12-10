@@ -1,4 +1,9 @@
 <div class="ticketsContainer">
+    <nav class="navBar">
+    <a href="/cart" class="cart">Cart</a>
+    <a href="/products">Products</a>
+    <a href="/createProducts">Create Products</a>
+</nav>
     <h1>¡Tus pedidos aguardan!</h1>
     {{#each tickets}}
         <div class="ticket" id="{{_id}}">
@@ -8,8 +13,10 @@
 
             <p>Enviaremos toda esta información a tu correo: {{purchaser}}</p>
 
-            <button>Finalizar compra</button>
-            <button>Eliminar ticket</button>
+            <button class="purchase">Finalizar compra</button>
+            <button class="delete" id="{{_id}}">Eliminar ticket</button>
         </div>
     {{/each}}
 </div>
+
+<script src="/js/purchase.js"></script>
