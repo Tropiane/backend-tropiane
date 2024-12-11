@@ -108,5 +108,7 @@ checkout.addEventListener("click", async (e) => {
         },
         body: JSON.stringify({ total, user, code}),
     })
+
+    window.location.href = `/cart/${cart}/purchase`;
     
 })

@@ -6,9 +6,9 @@ import ProductController from "../controllers/products.controller.js";
 import {authorizeRole} from "../middlewares/authorize.role.js";
 
 const controller = new ProductController();
-const productsRouter = Router();
+const router = Router();
 
-productsRouter.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort === 'asc' ? 1 : req.query.sort === 'desc' ? -1 : null;
@@ -43,14 +43,13 @@ productsRouter.get("/", async (req, res) => {
     }
 });
 
-
-productsRouter.get("/:id", async (req, res)=>{
+router.get("/:id", async (req, res)=>{
     const {id} = req.params;
     const findProduct = await Products.findById({_id: id})
     res.status(200).json(findProduct)
 })
 
-productsRouter.post("/", uploader.single('image'), async (req, res) => {
+router.post("/", uploader.single('image'), async (req, res) => {
     try {
         const body = req.body;
         const image = req.file ? `/images/${req.file.filename}` : null;
@@ -68,7 +67,7 @@ productsRouter.post("/", uploader.single('image'), async (req, res) => {
     }
 });
 
-productsRouter.patch("/:id",authorizeRole("ADMIN"), async (req, res)=>{
+router.patch("/:id",authorizeRole("ADMIN"), async (req, res)=>{
     try {
         const {id} = req.params;
         const body = req.body;
@@ -79,15 +78,16 @@ productsRouter.patch("/:id",authorizeRole("ADMIN"), async (req, res)=>{
     }
 })
 
-productsRouter.delete("/:pid",authorizeRole("ADMIN"), async (req, res)=>{
-    const {pid} = req.params;
-    await Products.deleteOne({_id: pid});
+router.delete("/:id",authorizeRole("ADMIN"), async (req, res)=>{
+    const {id} = req.params;
+    await Products.deleteOne({_id: id});
     
-    res.send(`Product ${pid} deleted`);
+    res.send(`Product ${id} deleted`);
 })
 
-productsRouter.all("*", (req, res) => {
+router.all("*", (req, res) => {
     res.status(404).send({ error: "Endpoint not found" });
 });
 
+const productsRouter = router;
 export default productsRouter;

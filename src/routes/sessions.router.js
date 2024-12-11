@@ -4,9 +4,9 @@ import UserController from "../controllers/users.controller.js";
 
 const controller = new UserController();
 
-const sessionsRouter = Router();
+const router = Router();
 
-sessionsRouter.get("/current", passport.authenticate("current", { session: false }), async(req, res) => {
+router.get("/current", passport.authenticate("current", { session: false }), async(req, res) => {
     const data = req.user;
     const role = "USER";
     const user = await controller.getOne({email: data.email});
@@ -24,8 +24,9 @@ sessionsRouter.get("/current", passport.authenticate("current", { session: false
     }
 });
 
-sessionsRouter.all("*", (req, res) => {
+router.all("*", (req, res) => {
     res.status(404).send({ error: "Endpoint not found" });
 });
 
+const sessionsRouter = router;
 export default sessionsRouter;

@@ -112,34 +112,35 @@ class CartService{
         const user = data.user;
         const code = data.code;
         let totalPrice = 0;
-
+    
         try {
-            cartDB.products.map(async (product) =>{
+            for (const product of cartDB.products) {
                 const id = product._id.toString();
-                
+    
                 try {
-                    if (product.quantity < product.product.stock) {
+                    if (product.quantity <= product.product.stock) {
+                        
                         totalPrice += product.product.price * product.quantity;
                         product.product.stock -= product.quantity;
-                        this.deleteProductFromCart(cart, id);                    
                         await product.product.save();
-                    }else{
-                        console.log('no hay stock para el producto ' + product.product.title);
+    
+                        await this.deleteProductFromCart(cart, id);
+                    } else {
+                        console.log('No hay stock para el producto ' + product.product.title);
                     }
                 } catch (error) {
-                    console.log(error);
-                    
+                    console.log('Error procesando el producto:', product.product.title, error);
                 }
-                
-            });
-            const ticket = new ticketDto(code, Date.now(), totalPrice, user);      
+            }
+
+            const ticket = new ticketDto(code, Date.now(), totalPrice, user);
             return await ticketController.create(ticket);
-                  
         } catch (error) {
-            console.log(error);
-            
+            console.log('Error en la compra:', error);
+            throw error;
         }
     }
+    
 
 }
 

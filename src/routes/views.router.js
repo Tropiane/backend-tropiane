@@ -8,7 +8,7 @@ import { verifyToken } from "../utils.js";
 import { authorizeRole } from "../middlewares/authorize.role.js";
 import TicketController from "../controllers/tickets.controller.js";
 
-const viewsRouter = Router();
+const router = Router();
 
 const productController = new ProductController();
 const userController = new UserController();
@@ -17,7 +17,7 @@ const ticketController = new TicketController();
 
 let errorLogin= ''
 
-viewsRouter.get("/products", async(req, res)=>{
+router.get("/products", async(req, res)=>{
 
     const limit = req.query.limit || 10;
     const page = parseInt(req.query.page) || 1;
@@ -46,7 +46,7 @@ viewsRouter.get("/products", async(req, res)=>{
     }
 });
 
-viewsRouter.get("/createproducts", verifyToken, authorizeRole("ADMIN"), async (req, res)=>{
+router.get("/createproducts", verifyToken, authorizeRole("ADMIN"), async (req, res)=>{
     try {
         res.render("createProducts", {
             css: "createProducts.css"
@@ -56,7 +56,7 @@ viewsRouter.get("/createproducts", verifyToken, authorizeRole("ADMIN"), async (r
     }
 });
 
-viewsRouter.get("/details/:pid", async (req, res)=>{
+router.get("/details/:pid", async (req, res)=>{
     try {
         const {pid} = req.params;
         const product = await productController.getProductById(pid);
@@ -70,7 +70,7 @@ viewsRouter.get("/details/:pid", async (req, res)=>{
     }
 });
 
-viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
+router.get("/cart/:cartId", verifyToken, async (req, res)=>{
     const data = req.user;
     const user = await userController.getOne({email:data.email});
     const findCart = user.cart;
@@ -91,7 +91,7 @@ viewsRouter.get("/cart/:cartId", verifyToken, async (req, res)=>{
     }
 });
 
-viewsRouter.get("/cart/:cartid/purchase", verifyToken, async (req, res)=>{
+router.get("/cart/:cartid/purchase", verifyToken, async (req, res)=>{
     const data = req.user;
     const tickets = await ticketController.getAll(data.email);
     
@@ -102,7 +102,7 @@ viewsRouter.get("/cart/:cartid/purchase", verifyToken, async (req, res)=>{
     
 });
 
-viewsRouter.get("/login", async (req, res)=>{
+router.get("/login", async (req, res)=>{
     httpServer.on('errorLogin', (error) => {
         errorLogin = error
         setTimeout(() => {
@@ -121,7 +121,7 @@ viewsRouter.get("/login", async (req, res)=>{
     }
 });
 
-viewsRouter.get("/register", async (req, res)=>{
+router.get("/register", async (req, res)=>{
     httpServer.on('errorLogin', (error) => {
         errorLogin = error
         setTimeout(() => {
@@ -135,7 +135,7 @@ viewsRouter.get("/register", async (req, res)=>{
     })
 });
 
-viewsRouter.get("/profile", verifyToken ,async (req, res)=>{
+router.get("/profile", verifyToken ,async (req, res)=>{
     const data = await userController.getOne({email: req.user.email});
     
     res.render("profile", {
@@ -143,5 +143,5 @@ viewsRouter.get("/profile", verifyToken ,async (req, res)=>{
     })
 });
 
-
+const viewsRouter = router
 export default viewsRouter

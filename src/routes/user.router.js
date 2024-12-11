@@ -9,14 +9,14 @@ import initAuthStrategies from "../auth/passport.config.js";
 import config from "../config.js";
 import httpServer from "../app.js";
 
-const userRouter = Router();
+const router = Router();
 const userController = new UserController();
 
 initAuthStrategies();
 
-userRouter.get("/ghlogin", passport.authenticate("ghlogin", { scope: ["user:email"] }), (req, res) => {});
+router.get("/ghlogin", passport.authenticate("ghlogin", { scope: ["user:email"] }), (req, res) => {});
 
-userRouter.get("/ghcallback", 
+router.get("/ghcallback", 
     passport.authenticate("ghlogin", { failureRedirect: "/login", failureMessage: "GitHub login failed" }), 
     (req, res) => {
         const process = userController.getOne({ email: req.user.email });
@@ -37,7 +37,7 @@ userRouter.get("/ghcallback",
 );
 
 // Param handler
-userRouter.param("uid", async (req, res, next, uid) => {
+router.param("uid", async (req, res, next, uid) => {
     try {
         const user = await userController.getById(uid);
         req.user = user;
@@ -48,7 +48,7 @@ userRouter.param("uid", async (req, res, next, uid) => {
 });
 
 // Other routes
-userRouter.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const data = await userController.getAll();
         const result = data.map(user => new UserDto(user));
@@ -61,7 +61,7 @@ userRouter.get("/", async (req, res) => {
     }
 });
 
-userRouter.get("/:uid", async (req, res) => {
+router.get("/:uid", async (req, res) => {
     const { uid } = req.params;
     try {
         const user = await userController.getById(uid);
@@ -76,7 +76,7 @@ userRouter.get("/:uid", async (req, res) => {
     }
 });
 
-userRouter.post("/", async (req, res) => {
+router.post("/", async (req, res) => {
     const { name, age, email, password } = req.body;
     const user = { name, age, email, password };
     try {
@@ -90,7 +90,7 @@ userRouter.post("/", async (req, res) => {
     }
 });
 
-userRouter.put("/:uid", async (req, res) => {
+router.put("/:uid", async (req, res) => {
     const { uid } = req.params;
     const { name, age, email } = req.body;
     try {
@@ -109,7 +109,7 @@ userRouter.put("/:uid", async (req, res) => {
     }
 });
 
-userRouter.delete("/:uid", async (req, res) => {
+router.delete("/:uid", async (req, res) => {
     const { uid } = req.params;
     try {
         const result = await userController.delete(uid);
@@ -119,7 +119,7 @@ userRouter.delete("/:uid", async (req, res) => {
     }
 });
 
-userRouter.get("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
     req.session.destroy(err => {
         if (err) {
             return res.status(400).json({ message: "Logout error" });
@@ -129,12 +129,12 @@ userRouter.get("/logout", (req, res) => {
     });
 });
 
-userRouter.post("/logoutjwt", (req, res) => {
+router.post("/logoutjwt", (req, res) => {
     res.clearCookie(`${config.APP_NAME}_cookie`);
     res.redirect("/login");
 });
 
-userRouter.post("/register", validateRegister, async (req, res) => {
+router.post("/register", validateRegister, async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     let cart;
     const user = { firstName, lastName, email, password, cart };
@@ -151,7 +151,7 @@ userRouter.post("/register", validateRegister, async (req, res) => {
     }
 });
 
-userRouter.post("/login", passport.authenticate("login", { failureRedirect: "/login" }), (req, res) => {
+router.post("/login", passport.authenticate("login", { failureRedirect: "/login" }), (req, res) => {
     req.session.save((err) => {
         if (err) {
             return res.status(500).json({ message: "Session save error" });
@@ -160,7 +160,7 @@ userRouter.post("/login", passport.authenticate("login", { failureRedirect: "/lo
     });
 });
 
-userRouter.post("/jwtlogin", async (req, res) => {
+router.post("/jwtlogin", async (req, res) => {
     const { username, password } = req.body;
     if (username !== '' && password !== '') {
         const process = await userController.authenticate(username, password);
@@ -185,12 +185,13 @@ userRouter.post("/jwtlogin", async (req, res) => {
     }
 });
 
-userRouter.get("/profile", verifyToken, (req, res) => {
+router.get("/profile", verifyToken, (req, res) => {
     res.status(200).send({ error: null, data: req.user });
 });
 
-userRouter.all("*", (req, res) => {
+router.all("*", (req, res) => {
     res.status(404).send({ error: "Endpoint not found" });
 });
 
+const userRouter = router;
 export default userRouter
