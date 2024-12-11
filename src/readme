@@ -16,6 +16,9 @@ The aplication have 4 models:
 - Ticket
 - User
 
+¡Important!
+To use the methods CRUD on the route "/cart", you must be logged in and your go to the route "http://localhost:8080/cart/null". The CartID is saved on the localStorage, and delete of the local storage if the user logout.
+
 On this aplication you can create, read, update and delete products, carts, tickets and users. I Using diferents method to create, read, update and delete data.
 For example, use forms with methods Put, Delete, Post and Get on Handlebars, and use fetch with methods Put, Delete, Post and Get on JavaScript (folder public/js).
 
