@@ -133,7 +133,7 @@ class CartService{
                 }
             }
 
-            const ticket = new ticketDto(code, Date.now(), totalPrice, user);
+            const ticket = new ticketDto(code, Date.now(), totalPrice, user, "Pendiente");
             return await ticketController.create(ticket);
         } catch (error) {
             console.log('Error en la compra:', error);

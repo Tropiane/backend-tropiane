@@ -69,6 +69,7 @@ router.get("/:cid/purchase",verifyToken,authorizeRole("USER"), async (req, res) 
 router.post("/:cid/purchase",verifyToken, authorizeRole("USER"), async (req, res) => {
     const { cid } = req.params;
     const data = req.body;
+    console.log(data);
     
     try {
         await controller.purchase(cid, data);

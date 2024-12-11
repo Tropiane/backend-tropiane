@@ -10,7 +10,9 @@ class UsersDao {
 
     async getAll(){
         try {
-            return await UserModel.find();
+            const users = await UserModel.find().lean();
+            const {password, ...rest} = users;
+            return rest;
         } catch (error) {
             console.log(error);
             
@@ -43,9 +45,9 @@ class UsersDao {
 
     async create(user) {
         try {
-            user.password = createHash(user.password);
-            user.cart = await controller.createCart();
-            return await UserModel.create(user);
+            const formatUser = new UserDto(user);
+            formatUser.cart = await controller.createCart();
+            return await UserModel.create(formatUser);
         } catch (error) {
             if (error.code === 11000) { 
                 throw new Error("Email already exists");

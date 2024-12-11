@@ -3,19 +3,20 @@
     <a href="/products">Products</a>
     <a href="/createProducts">Create Products</a>
 </nav>
+
 <div class="ticketsContainer">
     <h1>¡Tus pedidos aguardan!</h1>
     {{#each tickets}}
-        <div class="ticket" id="{{_id}}">
-            <p>código de la compra: {{code}}</p>
-            <p>total: ${{amount}}</p>
-            <p>hora de la compra: {{purchaseDatetime}}</p>
+            <form class="ticket" id="{{_id}}">
+                <p>código de la compra: {{code}}</p>
+                <p>total: ${{amount}}</p>
+                <p>hora de la compra: {{purchaseDatetime}}</p>
 
-            <p>Enviaremos toda esta información a tu correo: {{purchaser}}</p>
-
-            <button class="purchase">Finalizar compra</button>
-            <button class="delete" id="{{_id}}">Eliminar ticket</button>
-        </div>
+                <p>Enviaremos toda esta información a tu correo: {{purchaser}}</p>
+                <p class="{{status}}">El estado de la compra es: {{status}}</p>
+                <button class="purchase" id="{{_id}}">Finalizar compra</button>
+                <button class="delete" id="{{_id}}">Eliminar ticket</button>
+            </form>
     {{/each}}
 </div>
 

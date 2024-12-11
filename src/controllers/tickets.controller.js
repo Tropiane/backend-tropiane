@@ -20,4 +20,8 @@ export default class TicketController {
     async delete(id){
         return await service.deleteTicket(id);
     }
+
+    async update(id){
+        return await service.updateTicket(id);
+    }
 }

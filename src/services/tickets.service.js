@@ -20,4 +20,8 @@ export default class TicketService {
     async deleteTicket(id) {
         return await this.ticketDao.delete(id);
     }
+
+    async updateTicket(id) {
+        return await this.ticketDao.update(id);
+    }
 }

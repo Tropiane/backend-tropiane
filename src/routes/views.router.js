@@ -94,10 +94,11 @@ router.get("/cart/:cartId", verifyToken, async (req, res)=>{
 router.get("/cart/:cartid/purchase", verifyToken, async (req, res)=>{
     const data = req.user;
     const tickets = await ticketController.getAll(data.email);
-    
+    const message = tickets.status === true ? "Compra pendiente" : "Compra finalizada";
     res.render("purchase",{
         css: "purchase.css",
-        tickets
+        tickets,
+        message
     })
     
 });

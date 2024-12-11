@@ -2,7 +2,10 @@ import {fileURLToPath} from "url";
 import {dirname} from "path";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+
 import config from "./config.js";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -36,4 +39,51 @@ export const handlePolicies = policies => (req, res, next) => {
     const role = req.user.role;
     if(!policies.includes(role)) return res.status(403).send({ error: 'Usuario no autorizado', data: [] });
     next();
+}
+
+const transport = nodemailer.createTransport({
+    service: "gmail",
+    port: 587,
+    auth: {
+        user: config.GMAIL_USER,
+        pass: config.GMAIL_PASS,
+    },
+});
+
+export const sendMail = async (to, subject, html) => {
+    try {
+        const info = await transport.sendMail({
+            from: config.GMAIL_USER,
+            to,
+            subject,
+            html,
+        });
+        console.log("Correo enviado:", info);
+    } catch (error) {
+        console.error("Error al enviar correo:", error);
+    }
+};
+
+export const registerMail = (user) => {
+    const { firstName, lastName, email } = user;
+    const subject = "Gracias por registrarte en el sitio";
+    const html = `<h1>¡Hola ${firstName} ${lastName}!</h1>
+    <p>Te has registrado con el email ${email}</p>
+    <p>Ya puede comenzar a comprar y disfrutar de nuestros productos</p>
+    <a href="http://localhost:8080/products">¡Comprar ahora!</a>`;
+    sendMail(email, subject, html);
+}
+
+export const purchaseMail = (user, tickets) => {
+    const { firstName, lastName, email } = user;
+    const subject = "Gracias por comprar en el sitio";
+    const html = `<h1>¡Hola ${firstName} ${lastName}!</h1>
+    <p>Este es el ticket de tu compra:</p>
+    <ul>
+        <li>codigo de compra:${tickets.code}</li>
+        <li>total:$ ${tickets.amount}</li>
+    </ul>
+    <p>Ya puede comenzar a comprar y disfrutar de nuestros productos</p>
+    <a href="http://localhost:8080/products">¡Comprar ahora!</a>`;
+    sendMail(email, subject, html);
 }

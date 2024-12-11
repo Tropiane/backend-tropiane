@@ -10,6 +10,8 @@ const config = {
   GIT_HUB_CALLBACK_URL: process.env.GIT_HUB_CALLBACK_URL,
   MONGODB_ID_REGEX: /^[a-f-\d]{24}$/i,
   PERSISTENCE: "mongodb",
+  GMAIL_USER: process.env.GMAIL_USER_APP,
+  GMAIL_PASS: process.env.GMAIL_PASS_APP
 };
 
 export default config;

@@ -8,6 +8,7 @@ import validateRegister from "../middlewares/register.js";
 import initAuthStrategies from "../auth/passport.config.js";
 import config from "../config.js";
 import httpServer from "../app.js";
+import { registerMail } from "../utils.js";
 
 const router = Router();
 const userController = new UserController();
@@ -76,20 +77,6 @@ router.get("/:uid", async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
-    const { name, age, email, password } = req.body;
-    const user = { name, age, email, password };
-    try {
-        const result = await userController.create(user);
-        res.send({
-            message: "User created",
-            payload: result
-        });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-});
-
 router.put("/:uid", async (req, res) => {
     const { uid } = req.params;
     const { name, age, email } = req.body;
@@ -145,6 +132,7 @@ router.post("/register", validateRegister, async (req, res) => {
         } else {
             await userController.create(user);
             res.redirect("/login")
+            registerMail(user);
         }
     } catch (error) {
         console.log(error);

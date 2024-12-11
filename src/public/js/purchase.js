@@ -18,6 +18,19 @@ ticketsContainer.addEventListener("click", async (e) => {
             console.log(error);
         }
     }
+
+    if(e.target.classList.contains("purchase")){
+        const id = e.target.id;  
+        
+        try {
+            await fetch(`/api/tickets/${id}`, {
+                method: "PUT",
+            })
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 })
 
 cart.addEventListener("click", async (e) => {

@@ -1,0 +1,33 @@
+This is an aplication to plataform CoderHouse.
+The present document is documentation of the Student Federico Tropiane, to use this aplication.
+
+The aplication is made with Node.js, Express.js, MongoDB, Mongoose, Bootstrap, Handlebars, and CSS.
+
+The aplication have 5 routes:
+- /api/products
+- /api/carts
+- /api/tickets
+- /api/users
+- /views
+
+The aplication have 4 models:
+- Product
+- Cart
+- Ticket
+- User
+
+On this aplication you can create, read, update and delete products, carts, tickets and users. I Using diferents method to create, read, update and delete data.
+For example, use forms with methods Put, Delete, Post and Get on Handlebars, and use fetch with methods Put, Delete, Post and Get on JavaScript (folder public/js).
+
+the folder "Public" its very important for the aplication, because all the static files are here.
+
+On the folder "auth" are only the files of passport.js, and the folder "middlewares" are only the files of the middlewares of the aplication, ussing the functions of passport and routes.
+
+USERS TO USE THE APPLICATION:
+To use all the functions of the application, you must be registered in the database, and you must be logged in. To register, you must go to the /register.hbs page, and to log in, you must go to the /login page. Your user are "USER".
+
+USER ADMIN TO USE THE APPLICATION:
+- Email: admin@admin
+- Password: admin
+
+This User only can create, read, update and delete products, carts, tickets and users.

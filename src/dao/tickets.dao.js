@@ -39,4 +39,14 @@ export default class TicketDao {
             
         }
     }
+
+    async update(id) {
+        try {
+            return await Ticket.findOneAndUpdate({_id: id}, {status: "Finalizado"});
+
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 }
